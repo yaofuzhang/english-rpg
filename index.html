@@ -10,51 +10,62 @@
 <link rel="manifest" href="manifest.json">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0a0a0a;--card:#1a1a2e;--gold:#f0c040;--xp:#4ade80;--hp:#f87171;--combo:#f59e0b;--text:#e2e8f0;--muted:#94a3b8;--accent:#6366f1;--success:#22c55e;--danger:#ef4444;--warn:#f59e0b}
+:root{--bg:#0a0a0a;--card:#1a1a2e;--gold:#f0c040;--xp:#4ade80;--hp:#f87171;--combo:#f59e0b;--text:#e2e8f0;--muted:#94a3b8;--accent:#6366f1;--success:#22c55e;--danger:#ef4444}
 body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-.screen{display:none;flex-direction:column;align-items:center;padding:20px 16px;min-height:100dvh}
+.screen{display:none;flex-direction:column;align-items:center;padding:20px 16px 40px;min-height:100dvh}
 .screen.active{display:flex}
-#start-screen{justify-content:center;gap:24px}
-.game-title{font-size:2.4rem;font-weight:900;background:linear-gradient(135deg,var(--gold),#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
-.game-subtitle{color:var(--muted);font-size:.95rem;text-align:center}
-.character-card{background:var(--card);border-radius:20px;padding:24px;width:100%;max-width:340px;display:flex;align-items:center;gap:16px;border:2px solid #2d2d4a}
-.avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:2rem}
-.char-info{flex:1}
-.char-name{font-weight:700;font-size:1.1rem}
-.char-title{color:var(--muted);font-size:.8rem;margin-top:2px}
+/* HOME */
+#home-screen{justify-content:center;gap:20px}
+.game-title{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,var(--gold),#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+.game-subtitle{color:var(--muted);font-size:.9rem;text-align:center;margin-top:-12px}
+.character-card{background:var(--card);border-radius:20px;padding:20px;width:100%;max-width:340px;display:flex;align-items:center;gap:14px;border:2px solid #2d2d4a}
+.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+.char-info{flex:1;min-width:0}
+.char-name{font-weight:700;font-size:1rem}
+.char-title{color:var(--muted);font-size:.75rem;margin-top:2px}
 .xp-bar-wrap{height:6px;background:#2d2d4a;border-radius:3px;margin-top:6px;overflow:hidden}
 .xp-bar-fill{height:100%;background:var(--xp);border-radius:3px;transition:width .5s}
 .xp-text{font-size:.7rem;color:var(--muted);margin-top:2px}
-.stats-row{display:flex;gap:16px;width:100%;max-width:340px}
-.stat-box{flex:1;background:var(--card);border-radius:14px;padding:14px;text-align:center;border:2px solid #2d2d4a}
-.stat-val{font-size:1.6rem;font-weight:900}
-.stat-val.gold{color:var(--gold)}.stat-val.fire{color:var(--combo)}.stat-val.ice{color:#60a5fa}
-.stat-label{color:var(--muted);font-size:.7rem;margin-top:2px}
-.btn{border:none;border-radius:14px;padding:16px 40px;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .15s;width:100%;max-width:340px;-webkit-tap-highlight-color:transparent}
+.stats-row{display:flex;gap:10px;width:100%;max-width:340px}
+.stat-box{flex:1;background:var(--card);border-radius:14px;padding:12px;text-align:center;border:2px solid #2d2d4a}
+.stat-val{font-size:1.4rem;font-weight:900}
+.stat-val.fire{color:var(--combo)}.stat-val.gold{color:var(--gold)}.stat-val.ice{color:#60a5fa}
+.stat-label{color:var(--muted);font-size:.65rem;margin-top:2px}
+.btn{border:none;border-radius:14px;padding:14px 32px;font-size:1.05rem;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .15s;width:100%;max-width:340px;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.97)}
 .btn-primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;box-shadow:0 4px 20px rgba(99,102,241,.4)}
+.btn-learn{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 4px 20px rgba(34,197,94,.3)}
 .btn-gold{background:linear-gradient(135deg,var(--gold),#f59e0b);color:#0a0a0a;box-shadow:0 4px 20px rgba(240,192,64,.3)}
-.btn-small{padding:10px 20px;font-size:.9rem;max-width:200px}
-.btn-row{display:flex;gap:12px;width:100%;max-width:340px}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px)}
-.modal{background:var(--card);border-radius:20px;padding:30px 24px;text-align:center;max-width:320px;width:90%;border:2px solid #2d2d4a}
-.modal h2{font-size:1.5rem;margin-bottom:8px}
-.modal p{color:var(--muted);margin-bottom:16px;font-size:.9rem}
-#battle-screen{gap:16px}
-.battle-header{display:flex;align-items:center;gap:12px;width:100%;max-width:400px}
-.hearts{display:flex;gap:4px;font-size:1.4rem}
+.btn-small{padding:10px 20px;font-size:.85rem;max-width:180px}
+.btn-back{background:transparent;color:var(--muted);border:1px solid #2d2d4a;padding:8px 18px}
+
+/* LEARN */
+#learn-screen{gap:16px;align-items:stretch;padding:20px}
+.learn-header{display:flex;align-items:center;gap:12px}
+.learn-content{background:var(--card);border-radius:16px;padding:20px;border:2px solid #2d2d4a;line-height:1.8;font-size:.95rem;overflow-y:auto;flex:1;max-height:calc(100dvh - 160px)}
+.learn-content h3{color:var(--gold);margin:16px 0 8px;font-size:1.1rem}
+.learn-content h3:first-child{margin-top:0}
+.learn-content .ex{background:#0a0a0a;border-radius:8px;padding:12px;margin:8px 0;font-family:monospace;font-size:.85rem;border-left:3px solid var(--accent)}
+.learn-content .tip{background:rgba(240,192,64,.1);border-radius:8px;padding:10px;margin:8px 0;font-size:.85rem;border-left:3px solid var(--gold)}
+.learn-content .wrong-spot{background:rgba(248,113,113,.1);border-radius:8px;padding:10px;margin:8px 0;font-size:.85rem;border-left:3px solid var(--danger)}
+.learn-actions{padding:12px 0;text-align:center}
+
+/* BATTLE */
+#battle-screen{gap:14px}
+.battle-header{display:flex;align-items:center;gap:10px;width:100%;max-width:400px}
+.hearts{display:flex;gap:4px;font-size:1.3rem}
 .heart{transition:transform .3s,opacity .3s}
 .heart.lost{opacity:.2;transform:scale(.8)}
-.combo-badge{margin-left:auto;background:var(--combo);color:#0a0a0a;font-weight:900;padding:4px 10px;border-radius:20px;font-size:.8rem;opacity:0;transition:opacity .3s}
+.combo-badge{margin-left:auto;background:var(--combo);color:#0a0a0a;font-weight:900;padding:4px 10px;border-radius:20px;font-size:.75rem;opacity:0;transition:opacity .3s}
 .combo-badge.active{opacity:1}
-.question-counter{color:var(--muted);font-size:.8rem;width:100%;max-width:400px}
+.question-counter{color:var(--muted);font-size:.75rem;width:100%;max-width:400px}
 .dot{width:8px;height:8px;border-radius:50%;background:#2d2d4a;transition:background .3s;display:inline-block;margin:0 2px}
 .dot.done{background:var(--success)}.dot.wrong{background:var(--danger)}.dot.current{background:var(--accent);animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.question-box{background:var(--card);border-radius:20px;padding:28px 20px;width:100%;max-width:400px;text-align:center;border:2px solid #2d2d4a;min-height:100px;display:flex;align-items:center;justify-content:center}
-.question-text{font-size:1.3rem;font-weight:700;line-height:1.6}
+.question-box{background:var(--card);border-radius:18px;padding:24px 18px;width:100%;max-width:400px;text-align:center;border:2px solid #2d2d4a;min-height:90px;display:flex;align-items:center;justify-content:center}
+.question-text{font-size:1.2rem;font-weight:700;line-height:1.6}
 .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:400px}
-.option-btn{background:var(--card);border:2px solid #2d2d4a;border-radius:14px;padding:16px;font-size:1rem;color:var(--text);cursor:pointer;transition:all .15s;text-align:center;font-weight:600}
+.option-btn{background:var(--card);border:2px solid #2d2d4a;border-radius:14px;padding:15px;font-size:.95rem;color:var(--text);cursor:pointer;transition:all .15s;text-align:center;font-weight:600}
 .option-btn:active{transform:scale(.96)}
 .option-btn.correct{background:var(--success);border-color:var(--success);color:#fff;animation:popIn .3s}
 .option-btn.wrong{background:var(--danger);border-color:var(--danger);color:#fff;animation:shake .4s}
@@ -62,47 +73,88 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 .option-btn:disabled.correct,.option-btn:disabled.wrong{opacity:1}
 @keyframes popIn{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
-.feedback-text{font-size:1.2rem;font-weight:900;text-align:center;min-height:30px}
+.feedback-text{font-size:1.1rem;font-weight:900;text-align:center;min-height:28px}
 .feedback-text.good{color:var(--success)}.feedback-text.bad{color:var(--danger)}
-#result-screen{gap:20px;justify-content:center}
-.result-icon{font-size:4rem}
-.result-title{font-size:1.6rem;font-weight:900;text-align:center}
-.result-stats{display:flex;gap:12px;width:100%;max-width:340px}
-.result-stat{flex:1;background:var(--card);border-radius:14px;padding:16px;text-align:center;border:2px solid #2d2d4a}
-.result-stat .val{font-size:1.4rem;font-weight:900}
-.result-stat .lbl{color:var(--muted);font-size:.7rem;margin-top:2px}
-.xp-gain{color:var(--xp);font-weight:900;font-size:1.2rem;text-align:center}
+
+/* RESULT */
+#result-screen{gap:18px;justify-content:center}
+.result-icon{font-size:3.5rem}
+.result-title{font-size:1.5rem;font-weight:900;text-align:center}
+.result-stats{display:flex;gap:10px;width:100%;max-width:340px}
+.result-stat{flex:1;background:var(--card);border-radius:14px;padding:14px;text-align:center;border:2px solid #2d2d4a}
+.result-stat .val{font-size:1.3rem;font-weight:900}
+.result-stat .lbl{color:var(--muted);font-size:.65rem;margin-top:2px}
+.xp-gain{color:var(--xp);font-weight:900;font-size:1.1rem;text-align:center}
+
+/* PARTICLES */
 #particles{position:fixed;inset:0;pointer-events:none;z-index:200}
 .particle{position:absolute;font-size:1.4rem;animation:particleUp .8s ease-out forwards}
 @keyframes particleUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(.5) rotate(20deg)}}
-@media(max-width:360px){.game-title{font-size:1.8rem}.question-text{font-size:1.1rem}.option-btn{font-size:.85rem;padding:14px 10px}.options-grid{gap:8px}}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px)}
+.modal{background:var(--card);border-radius:20px;padding:30px 24px;text-align:center;max-width:320px;width:90%;border:2px solid #2d2d4a}
+.modal h2{font-size:1.5rem;margin-bottom:8px}
+.modal p{color:var(--muted);margin-bottom:16px;font-size:.9rem}
+
+/* TOPIC PICKER */
+.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:340px}
+.topic-chip{background:var(--card);border:2px solid #2d2d4a;border-radius:12px;padding:12px;text-align:center;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--text);transition:all .15s}
+.topic-chip:active{transform:scale(.96)}
+.topic-chip.active{border-color:var(--accent);background:rgba(99,102,241,.15)}
+.topic-chip .emoji{font-size:1.3rem;display:block;margin-bottom:4px}
+
+@media(max-width:360px){.game-title{font-size:1.8rem}.question-text{font-size:1.05rem}.option-btn{font-size:.82rem;padding:12px 8px}}
 </style>
 </head>
 <body>
 
-<div id="start-screen" class="screen active">
+<!-- ========== HOME ========== -->
+<div id="home-screen" class="screen active">
   <div class="game-title">⚔️ 英语征途</div>
   <div class="game-subtitle">同等学力申硕 · RPG 训练营</div>
+
   <div class="character-card">
     <div class="avatar" id="avatar-icon">📖</div>
     <div class="char-info">
       <div class="char-name" id="char-name">英语难民</div>
-      <div class="char-title" id="char-title">Lv.1 · 五大句型尚未征服</div>
+      <div class="char-title" id="char-title">Lv.1 · 从五大句型开始</div>
       <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar" style="width:0%"></div></div>
       <div class="xp-text" id="xp-text">0 / 100 XP</div>
     </div>
   </div>
+
   <div class="stats-row">
-    <div class="stat-box"><div class="stat-val fire" id="stat-streak">0</div><div class="stat-label">🔥 连续签到</div></div>
-    <div class="stat-box"><div class="stat-val gold" id="stat-total">0</div><div class="stat-label">⭐ 累计 XP</div></div>
-    <div class="stat-box"><div class="stat-val ice" id="stat-best">0</div><div class="stat-label">💎 最高连击</div></div>
+    <div class="stat-box"><div class="stat-val fire" id="stat-streak">0</div><div class="stat-label">🔥 签到</div></div>
+    <div class="stat-box"><div class="stat-val gold" id="stat-total">0</div><div class="stat-label">⭐ XP</div></div>
+    <div class="stat-box"><div class="stat-val ice" id="stat-best">0</div><div class="stat-label">💎 连击</div></div>
   </div>
-  <button class="btn btn-primary" onclick="startBattle()">⚡ 开始今日修炼</button>
-  <button class="btn btn-small" onclick="resetGame()" style="background:transparent;color:var(--muted);border:1px solid #2d2d4a">🔄 重置存档</button>
+
+  <button class="btn btn-learn" onclick="startLearn()">📖 学习 · 今日课程</button>
+  <button class="btn btn-primary" onclick="startBattle()">⚔️ 战斗 · 检验所学</button>
+
+  <div style="color:var(--muted);font-size:.75rem;margin-top:4px">🎯 自选专题练习</div>
+  <div class="topic-grid" id="topic-grid"></div>
+
+  <button onclick="resetGame()" style="background:transparent;color:var(--muted);border:1px solid #2d2d4a;padding:8px 20px;border-radius:10px;font-size:.8rem;cursor:pointer">🔄 重置存档</button>
 </div>
 
+<!-- ========== LEARN ========== -->
+<div id="learn-screen" class="screen">
+  <div class="learn-header">
+    <button class="btn-back" onclick="goHome()">← 回城</button>
+    <span style="color:var(--muted);font-size:.85rem" id="learn-label">Lv.1 课程</span>
+  </div>
+  <div class="learn-content" id="learn-content"></div>
+  <div class="learn-actions">
+    <button class="btn btn-primary" onclick="startBattle()">⚔️ 已学完，开始战斗！</button>
+  </div>
+</div>
+
+<!-- ========== BATTLE ========== -->
 <div id="battle-screen" class="screen">
   <div class="battle-header">
+    <button class="btn-back" onclick="confirmQuit()" style="font-size:.75rem;padding:6px 12px">← 逃走</button>
     <div class="hearts" id="hearts"></div>
     <div class="combo-badge" id="combo-badge">🔥 x1</div>
   </div>
@@ -112,22 +164,24 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
   <div class="options-grid" id="options"></div>
 </div>
 
+<!-- ========== RESULT ========== -->
 <div id="result-screen" class="screen">
   <div class="result-icon" id="result-icon"></div>
   <div class="result-title" id="result-title"></div>
   <div class="result-stats">
     <div class="result-stat"><div class="val" id="res-correct">0</div><div class="lbl">✅ 正确</div></div>
     <div class="result-stat"><div class="val" id="res-combo">0</div><div class="lbl">🔥 最高连击</div></div>
-    <div class="result-stat"><div class="val" id="res-hp">3</div><div class="lbl">❤️ 剩余血量</div></div>
+    <div class="result-stat"><div class="val" id="res-hp">3</div><div class="lbl">❤️ 血量</div></div>
   </div>
   <div class="xp-gain" id="xp-gain"></div>
   <div id="level-up-msg"></div>
+  <button class="btn btn-learn" onclick="startLearn()">📖 哪里不会学哪里</button>
   <button class="btn btn-primary" onclick="startBattle()">🔁 再来一局</button>
-  <button class="btn btn-small" onclick="goHome()" style="background:transparent;color:var(--muted);border:1px solid #2d2d4a">🏠 回城</button>
+  <button class="btn-small" onclick="goHome()" style="background:transparent;color:var(--muted);border:1px solid #2d2d4a">🏠 回城</button>
 </div>
 
+<!-- ========== MODALS & PARTICLES ========== -->
 <div id="particles"></div>
-
 <div id="level-modal" class="modal-overlay" style="display:none">
   <div class="modal">
     <div style="font-size:3rem">🎉</div>
@@ -138,37 +192,813 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 </div>
 
 <script>
-const LEVELS=[{lv:1,title:'英语难民',xp:0,icon:'📖',desc:'五大句型尚未征服',topic:'sentence-basic'},{lv:2,title:'语法学徒',xp:100,icon:'📚',desc:'从句标记已入门',topic:'sentence-basic'},{lv:3,title:'拆句新手',xp:250,icon:'🔍',desc:'能拆解简单长难句',topic:'sentence-mixed'},{lv:4,title:'词汇猎人',xp:450,icon:'🎯',desc:'认识300+高频词',topic:'vocab-1'},{lv:5,title:'阅读侦察兵',xp:700,icon:'🕵️',desc:'阅读理解正确率>50%',topic:'vocab-2'},{lv:6,title:'完形战士',xp:1000,icon:'🛡️',desc:'完形填空稳定6+分',topic:'cloze'},{lv:7,title:'翻译法师',xp:1400,icon:'🧙',desc:'英译汉拿到7+分',topic:'translation'},{lv:8,title:'写作骑士',xp:1900,icon:'⚔️',desc:'模板默写肌肉记忆',topic:'writing'},{lv:9,title:'全题型大师',xp:2500,icon:'👑',desc:'各题型均60%+正确率',topic:'mixed'},{lv:10,title:'及格勇士',xp:3200,icon:'🏆',desc:'模考稳定60+分',topic:'mixed'}];
-const BANKS={'sentence-basic':[{q:'The baby smiled.',opts:['SV','SVO','SVC','SVOO'],ans:0,hint:'smiled 后面什么也没有，动词意思已经完整'},{q:'She cooked dinner.',opts:['SV','SVO','SVC','SVOO'],ans:1,hint:'cooked + dinner → 动作 + 承受者'},{q:'He is a doctor.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'doctor 说的是"他是谁"，不是他做了什么'},{q:'I bought her a gift.',opts:['SVO','SVC','SVOO','SVOC'],ans:2,hint:'her 和 gift 是两个不同的东西'},{q:'She made me happy.',opts:['SVO','SVC','SVOO','SVOC'],ans:3,hint:'happy 说的是 me 的状态'},{q:'The sun rises.',opts:['SV','SVO','SVC','SVOO'],ans:0,hint:'rises 后面不接宾语，意思完整'},{q:'They elected him president.',opts:['SVO','SVC','SVOO','SVOC'],ans:3,hint:'president 说的是 him 的身份'},{q:'The food tastes good.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'tastes 是系动词，good 说的是 food'},{q:'He told her a story.',opts:['SVO','SVC','SVOO','SVOC'],ans:2,hint:'her 和 story 指不同东西'},{q:'She looks tired.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'looks 是系动词，tired 说的是 she'},{q:'Birds fly south in winter.',opts:['SV','SVO','SVC','SVOO'],ans:0,hint:'south in winter 是状语（可删除），骨架就是 Birds fly'},{q:'I found the movie boring.',opts:['SVO','SVC','SVOO','SVOC'],ans:3,hint:'boring 说的是 movie 的状态'}],'sentence-mixed':[{q:'The cake she baked was delicious.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'was delicious 说的是 cake，中间 she baked 是定语从句'},{q:'He gave his daughter a new phone.',opts:['SVO','SVC','SVOO','SVOC'],ans:2,hint:'his daughter 和 a new phone 是两个不同实体'},{q:'The news made everyone relieved.',opts:['SVO','SVC','SVOO','SVOC'],ans:3,hint:'relieved 说的是 everyone 的状态'},{q:'What she said surprised me.',opts:['SV','SVO','SVC','SVOO'],ans:1,hint:'surprised + me → 动作+承受者。What she said 是整个主语从句'},{q:'The door remained closed.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'remained 是系动词，closed 说的是 door'}],'vocab-1':[{q:'abandon',opts:['放弃','获得','影响','评估'],ans:0,hint:'a + bandon(板凳) → 冷板凳 → 被放弃'},{q:'access',opts:['评估','进入','放弃','适应'],ans:1,hint:'ac + cess(走) → 走过去 → 进入/获取'},{q:'accurate',opts:['丰富的','抽象的','准确的','足够的'],ans:2,hint:'ac + cur(关心) + ate → 用心做的 → 精准的'},{q:'achieve',opts:['放弃','影响','适应','达到'],ans:3,hint:'a + chieve(首领) → 成为首领 → 达成目标'},{q:'acquire',opts:['放弃','获得','影响','评估'],ans:1,hint:'ac + quire(寻求) → 寻求到 → 获得'},{q:'adequate',opts:['抽象的','放弃的','足够的','影响的'],ans:2,hint:'ad + equ(平等) + ate → 与需求平等的 → 足够的'},{q:'affect',opts:['放弃','影响','获得','评估'],ans:1,hint:'af + fect(做) → 对...起作用 → 影响'},{q:'abundant',opts:['放弃的','抽象的','准确的','丰富的'],ans:3,hint:'a(无)+bund(边界)+ant → 无边界的 → 丰富的'},{q:'annual',opts:['放弃的','每年的','影响的','足够的'],ans:1,hint:'ann(年)+ual → 每年的'},{q:'apparent',opts:['足够的','放弃的','明显的','获得的'],ans:2,hint:'ap+par(出现)+ent → 出现了→明显的'}],'vocab-2':[{q:'approach',opts:['方法；接近','放弃','评估','影响'],ans:0,hint:'ap+proach(近)→靠近→方法/接近'},{q:'assess',opts:['放弃','评估','获得','影响'],ans:1,hint:'as+sess(坐)→坐下来仔细看→评估'},{q:'artificial',opts:['放弃的','足够的','人工的','每年的'],ans:2,hint:'arti(技艺)+fic(做)+ial → 人工做的'},{q:'assume',opts:['放弃','影响','获得','假设'],ans:3,hint:'as+sume(拿)→先拿一个想法→假设'},{q:'argue',opts:['放弃','争论/主张','获得','评估'],ans:1,hint:'阅读态度题必背词——作者argue=主张'},{q:'alternative',opts:['丰富的','替代方案','准确的','放弃的'],ans:1,hint:'alter(改变)+ive→可以改变的→备选方案'},{q:'analyze',opts:['放弃','影响','分析','获得'],ans:2,hint:'ana(分开)+lyze(解开)→分开解开→分析'},{q:'appropriate',opts:['放弃的','适当的','足够的','获得的'],ans:1,hint:'ap+propri(自己的)+ate→适合自己的'},{q:'anxiety',opts:['放弃的','焦虑','足够的','获得的'],ans:1,hint:'anxious的名词→焦虑'},{q:'aggressive',opts:['丰富的','放弃的','侵略的/积极的','足够的'],ans:2,hint:'ag+gress(走)+ive→向前冲的→积极的/侵略的'}]};
-const DEFAULT_STATE={xp:0,lv:1,streak:0,lastPlayDate:'',bestCombo:0,totalQuestions:0,totalCorrect:0};
-function loadState(){try{return JSON.parse(localStorage.getItem('english-rpg-state'))||{...DEFAULT_STATE}}catch(e){return{...DEFAULT_STATE}}}
-function saveState(s){localStorage.setItem('english-rpg-state',JSON.stringify(s))}
-let state=loadState();
+// ==================== LEVELS ====================
+// banks array = [{bankId, weight}] — higher weight = more likely to be picked
+const LEVELS=[
+  {lv:1,title:'英语难民',xp:0,icon:'📖',desc:'语法词汇双线起步',banks:[{b:'sentence-basic',w:5},{b:'vocab-1',w:3}]},
+  {lv:2,title:'语法学徒',xp:120,icon:'📚',desc:'句型巩固 + 词汇扩展',banks:[{b:'sentence-basic',w:4},{b:'vocab-1',w:4},{b:'clause-markers',w:2}]},
+  {lv:3,title:'拆句新手',xp:300,icon:'🔍',desc:'从句识别 + 拆句实战',banks:[{b:'sentence-basic',w:3},{b:'vocab-2',w:4},{b:'clause-markers',w:3},{b:'sentence-mixed',w:3}]},
+  {lv:4,title:'词汇猎人',xp:550,icon:'🎯',desc:'词汇加速 + 语法深化',banks:[{b:'vocab-2',w:3},{b:'vocab-3',w:4},{b:'sentence-mixed',w:3},{b:'clause-markers',w:3}]},
+  {lv:5,title:'词汇大师',xp:900,icon:'💎',desc:'词库翻倍 + 阅读起步',banks:[{b:'vocab-3',w:3},{b:'vocab-4',w:4},{b:'sentence-mixed',w:3},{b:'reading',w:2}]},
+  {lv:6,title:'阅读侦察兵',xp:1350,icon:'🕵️',desc:'阅读理解 + 语法综合',banks:[{b:'vocab-4',w:3},{b:'reading',w:3},{b:'cloze',w:2},{b:'sentence-mixed',w:2}]},
+  {lv:7,title:'完形战士',xp:1900,icon:'🛡️',desc:'完形搭配 + 翻译入门',banks:[{b:'cloze',w:3},{b:'translation',w:3},{b:'vocab-4',w:2},{b:'reading',w:2}]},
+  {lv:8,title:'翻译法师',xp:2550,icon:'🧙',desc:'翻译陷阱 + 完形强化',banks:[{b:'translation',w:3},{b:'cloze',w:3},{b:'reading',w:3},{b:'vocab-4',w:2}]},
+  {lv:9,title:'写作骑士',xp:3300,icon:'⚔️',desc:'万能句型 + 模板默写',banks:[{b:'translation',w:3},{b:'reading',w:3},{b:'cloze',w:3},{b:'sentence-mixed',w:2}]},
+  {lv:10,title:'及格勇士',xp:4200,icon:'🏆',desc:'全题型混合 · 冲刺60+',banks:[{b:'sentence-basic',w:1},{b:'clause-markers',w:1},{b:'sentence-mixed',w:1},{b:'vocab-4',w:1},{b:'reading',w:2},{b:'cloze',w:2},{b:'translation',w:2}]},
+];
+
+// ==================== TEACHING CONTENT ====================
+const LESSONS={
+  'sentence-basic':`
+<h3>📐 五大基本句型</h3>
+<p>英文所有句子，无论多长，骨头只有 <b>五种</b>。把修饰成分削掉，骨架跑不出这五个：</p>
+
+<h3>① SV — 主语 + 动词</h3>
+<div class="ex">Birds fly. &nbsp;→&nbsp; 鸟飞。<br>The sun rises. &nbsp;→&nbsp; 太阳升起。<br>He laughed. &nbsp;→&nbsp; 他笑了。</div>
+<div class="tip">💡 <b>怎么判断：</b>动词后面不接任何东西，意思已经完整。就算后面有时间/地点状语，删掉状语骨架不变。</div>
+
+<h3>② SVO — 主语 + 动词 + 宾语</h3>
+<div class="ex">She eats rice. &nbsp;→&nbsp; 她吃米饭。<br>I love you. &nbsp;→&nbsp; 我爱你。<br>He opened the door. &nbsp;→&nbsp; 他开了门。</div>
+<div class="tip">💡 <b>怎么判断：</b>动词后面有承受者（名词/代词），问"动词+什么/谁"能答出来。</div>
+
+<h3>③ SVC — 主语 + 系动词 + 补语</h3>
+<div class="ex">She is beautiful. &nbsp;→&nbsp; 她很美。<br>He is a teacher. &nbsp;→&nbsp; 他是老师。<br>The food tastes good. &nbsp;→&nbsp; 食物尝起来好。</div>
+<div class="tip">💡 <b>怎么判断：</b>动词后面的词是<b>描述主语</b>的身份/状态。系动词不止 be——look/sound/smell/taste/feel/become/get/remain/seem 都是。</div>
+<div class="wrong-spot">⚠️ <b>最容易搞混的：SVC vs SVO</b><br><br>She ate a cake. → cake 和 she 是两个东西 → <b>SVO</b><br>She is a teacher. → teacher 就是 she 的身份 → <b>SVC</b><br><br>判断法：动词后名词和主语是"同一回事" → SVC；"不同东西" → SVO</div>
+
+<h3>④ SVOO — 主语 + 动词 + 间接宾语 + 直接宾语</h3>
+<div class="ex">She gave me a book. &nbsp;→&nbsp; 她给了我一本书。<br>He told her a story. &nbsp;→&nbsp; 他给她讲了个故事。<br>I'll send you an email. &nbsp;→&nbsp; 我给你发邮件。</div>
+<div class="tip">💡 <b>怎么判断：</b>动词后出现<b>两个名词/代词</b>，而且它们指的不是同一个人或东西。高频动词：give, send, tell, teach, show, buy, bring, lend, offer</div>
+
+<h3>⑤ SVOC — 主语 + 动词 + 宾语 + 宾补</h3>
+<div class="ex">She made me happy. &nbsp;→&nbsp; 她让我开心。<br>They elected him president. &nbsp;→&nbsp; 他们选他当总统。<br>I found the book interesting. &nbsp;→&nbsp; 我发现这本书很有趣。</div>
+<div class="tip">💡 <b>怎么判断：</b>补语说的是<b>宾语</b>的状态。在两个名词间插"是"试试：She made me (是) happy → 读得通 → SVOC。She gave me (是) a book → 读不通 → SVOO</div>
+
+<h3>🎯 五型速查卡</h3>
+<div class="ex">
+SV &nbsp; = 主语+动词 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Birds fly.<br>
+SVO = 主语+动词+宾语 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; She eats rice.<br>
+SVC = 主语+系动词+补语 &nbsp;&nbsp; She is tall.<br>
+SVOO= 主语+动词+宾+宾 &nbsp;&nbsp; She gave me a pen.<br>
+SVOC= 主语+动词+宾+补 &nbsp;&nbsp; She made me happy.
+</div>`,
+
+  'clause-markers':`
+<h3>🔗 三大从句标记词</h3>
+<p>长难句之所以长，是因为<b>句子里套了句子</b>。从句需要一个"标记词"作为入口信号。看到标记词 → 知道从句开始了 → 从句结束回到主句。</p>
+
+<h3>一、名词性从句</h3>
+<p>一个句子充当名词的角色。</p>
+<div class="ex">
+<b>that</b> &nbsp; I know <b>that</b> he is right. 我知道他是对的。<br>
+<b>whether/if</b> &nbsp; I wonder <b>whether</b> he will come. 我不知道他会不会来。<br>
+<b>what</b> &nbsp; I don't know <b>what</b> he wants. 我不知道他要什么。<br>
+<b>who/when/where/why/how</b> &nbsp; 同疑问词用法
+</div>
+
+<h3>二、定语从句</h3>
+<p>一个句子修饰一个名词。</p>
+<div class="ex">
+<b>who</b>(人·主语) &nbsp; The man <b>who</b> called you is my boss.<br>
+<b>whom</b>(人·宾语) &nbsp; The man <b>whom</b> you called is my boss.<br>
+<b>which</b>(物) &nbsp; The book <b>which</b> I read was great.<br>
+<b>that</b>(人+物) &nbsp; The book <b>that</b> I read was great.<br>
+<b>when</b>(时间) &nbsp; I remember the day <b>when</b> we met.<br>
+<b>where</b>(地点) &nbsp; This is the house <b>where</b> I grew up.
+</div>
+
+<h3>三、状语从句</h3>
+<p>最常考的类型。标记词表示条件/原因/时间/让步。</p>
+<div class="ex">
+<b>because/since/as</b> &nbsp; 因为... &nbsp; He didn't come <b>because</b> he was sick.<br>
+<b>if/unless</b> &nbsp; 如果/除非 &nbsp; <b>If</b> it rains, the match will be cancelled.<br>
+<b>although/though</b> &nbsp; 虽然 &nbsp; <b>Although</b> he was tired, he kept working.<br>
+<b>when/while/as</b> &nbsp; 当...时 &nbsp; <b>When</b> I arrived, she was sleeping.
+</div>
+<div class="tip">💡 状语从句在句首时，中文习惯把从句放前面翻译："虽然他累了，（但）他继续工作。"</div>`,
+
+  'sentence-mixed':`
+<h3>🔪 拆句实战</h3>
+<p>现在句子混合了从句和非谓语动词。拆解步骤：</p>
+<div class="tip">💡 <b>三步拆解法</b><br>① 找真谓语（这个句子真正的动词是谁？）<br>② 框从句（看到that/which/who/when/if等？用括号括起来）<br>③ 圈非谓语（有没有-ing/-ed/to do但不作谓语的？）</div>
+
+<h3>例1</h3>
+<div class="ex">The man standing at the door is our new manager.</div>
+<p>① 真谓语 = is（standing 前没有 be 动词 → 非谓语）<br>② 无从句标记词<br>③ standing = 现在分词，修饰 the man<br>→ 主句骨头：The man is our new manager.<br>→ 翻译：站在门口的那个男人是我们的新经理。</p>
+
+<h3>例2</h3>
+<div class="ex">The report written by the team that worked on this project shows great progress.</div>
+<p>① 真谓语 = shows<br>② that worked on this project → 定语从句修饰 the team<br>③ written = 过去分词，修饰 The report<br>→ 主句骨头：The report shows great progress.</p>`,
+
+  'vocab-1':`
+<h3>📝 高频词汇 Batch 01（词1-30）</h3>
+<div class="ex">
+<b>abandon</b> 放弃 &nbsp;|&nbsp; <b>ability</b> 能力 &nbsp;|&nbsp; <b>abroad</b> 在国外<br>
+<b>absent</b> 缺席的 &nbsp;|&nbsp; <b>absorb</b> 吸收 &nbsp;|&nbsp; <b>abstract</b> 抽象的<br>
+<b>abundant</b> 丰富的 &nbsp;|&nbsp; <b>abuse</b> 滥用 &nbsp;|&nbsp; <b>academic</b> 学术的<br>
+<b>accelerate</b> 加速 &nbsp;|&nbsp; <b>access</b> 进入；获取 &nbsp;|&nbsp; <b>accompany</b> 陪伴<br>
+<b>accomplish</b> 完成 &nbsp;|&nbsp; <b>account</b> 账户；解释 &nbsp;|&nbsp; <b>accurate</b> 准确的<br>
+<b>achieve</b> 达到 &nbsp;|&nbsp; <b>acknowledge</b> 承认 &nbsp;|&nbsp; <b>acquire</b> 获得<br>
+<b>adapt</b> 适应 &nbsp;|&nbsp; <b>adequate</b> 足够的 &nbsp;|&nbsp; <b>adjust</b> 调整<br>
+<b>administration</b> 管理 &nbsp;|&nbsp; <b>admire</b> 钦佩 &nbsp;|&nbsp; <b>admit</b> 承认<br>
+<b>adopt</b> 采用 &nbsp;|&nbsp; <b>advance</b> 前进 &nbsp;|&nbsp; <b>advantage</b> 优势<br>
+<b>advertise</b> 做广告 &nbsp;|&nbsp; <b>affair</b> 事务 &nbsp;|&nbsp; <b>affect</b> 影响
+</div>
+<div class="tip">💡 <b>背词规则：</b>看到英文 → 3秒内反应出中文 → 过。不要求拼写！</div>`,
+
+  'vocab-2':`
+<h3>📝 高频词汇 Batch 02（词31-60）</h3>
+<div class="ex">
+<b>afford</b> 负担得起 &nbsp;|&nbsp; <b>agency</b> 代理 &nbsp;|&nbsp; <b>aggressive</b> 侵略的/积极的<br>
+<b>agreement</b> 协议 &nbsp;|&nbsp; <b>aid</b> 援助 &nbsp;|&nbsp; <b>aim</b> 目标；瞄准<br>
+<b>allocate</b> 分配 &nbsp;|&nbsp; <b>alter</b> 改变 &nbsp;|&nbsp; <b>alternative</b> 替代方案<br>
+<b>amaze</b> 使惊奇 &nbsp;|&nbsp; <b>amount</b> 数量 &nbsp;|&nbsp; <b>analyze</b> 分析<br>
+<b>announce</b> 宣布 &nbsp;|&nbsp; <b>annual</b> 每年的 &nbsp;|&nbsp; <b>anxiety</b> 焦虑<br>
+<b>apparent</b> 明显的 &nbsp;|&nbsp; <b>appeal</b> 呼吁；吸引 &nbsp;|&nbsp; <b>application</b> 申请<br>
+<b>apply</b> 申请 &nbsp;|&nbsp; <b>approach</b> 方法；接近 &nbsp;|&nbsp; <b>appropriate</b> 适当的<br>
+<b>approve</b> 批准 &nbsp;|&nbsp; <b>argue</b> 争论；主张 &nbsp;|&nbsp; <b>arise</b> 出现<br>
+<b>artificial</b> 人工的 &nbsp;|&nbsp; <b>aspect</b> 方面 &nbsp;|&nbsp; <b>assess</b> 评估<br>
+<b>assign</b> 分配 &nbsp;|&nbsp; <b>assist</b> 帮助 &nbsp;|&nbsp; <b>assume</b> 假设
+</div>
+<div class="tip">💡 <b>真题高频：</b>approach, argue, assume, artificial 在阅读中出现频率极高。</div>`,
+
+  'default':`<h3>📖 敬请期待</h3><p>这个专题的教学内容正在准备中。先来战斗模式练练手吧！</p>`,
+
+  'vocab-3':`
+<h3>📝 高频词汇 Batch 03（词61-90）</h3>
+<div class="ex">
+<b>associate</b> 联系；关联 &nbsp;|&nbsp; <b>attempt</b> 尝试<br>
+<b>available</b> 可用的 &nbsp;|&nbsp; <b>average</b> 平均的；普通的<br>
+<b>avoid</b> 避免 &nbsp;|&nbsp; <b>aware</b> 意识到的<br>
+<b>balance</b> 平衡 &nbsp;|&nbsp; <b>barely</b> 几乎不<br>
+<b>barrier</b> 障碍 &nbsp;|&nbsp; <b>benefit</b> 利益；受益<br>
+<b>capable</b> 有能力的 &nbsp;|&nbsp; <b>capacity</b> 能力；容量<br>
+</div>
+<div class="tip">💡 <b>考试关键：</b>available 阅读极高频（出现在所有话题中）。be capable of=be able to。benefit from=受益于（完形+阅读必考搭配）。</div>`,
+
+  'vocab-4':`
+<h3>📝 高频词汇 Batch 04（词91-120）</h3>
+<div class="ex">
+<b>career</b> 职业；生涯 &nbsp;|&nbsp; <b>challenge</b> 挑战<br>
+<b>characteristic</b> 特征 &nbsp;|&nbsp; <b>claim</b> 声称；索赔<br>
+<b>community</b> 社区；团体 &nbsp;|&nbsp; <b>compete</b> 竞争<br>
+<b>complex</b> 复杂的 &nbsp;|&nbsp; <b>concentrate</b> 集中<br>
+<b>concept</b> 概念 &nbsp;|&nbsp; <b>concern</b> 关心；担忧<br>
+<b>conclude</b> 得出结论 &nbsp;|&nbsp; <b>conduct</b> 实施；进行<br>
+</div>
+<div class="tip">💡 <b>考试关键：</b>claim阅读观点题必考（the author claims that...）。concern完形高频（be concerned about）。context阅读猜词题核心概念。</div>`,
+
+  'reading':`
+<h3>📖 阅读态度词速查</h3>
+<div class="ex">
+<b>positive</b> 积极的 &nbsp;|&nbsp; <b>negative</b> 消极的<br>
+<b>neutral</b> 中立的 &nbsp;|&nbsp; <b>skeptical</b> 怀疑的<br>
+<b>optimistic</b> 乐观的 &nbsp;|&nbsp; <b>pessimistic</b> 悲观的<br>
+<b>critical</b> 批评的 &nbsp;|&nbsp; <b>objective</b> 客观的<br>
+<b>enthusiastic</b> 热情的 &nbsp;|&nbsp; <b>indifferent</b> 漠不关心的<br>
+<b>doubtful</b> 怀疑的 &nbsp;|&nbsp; <b>cautious</b> 谨慎的<br>
+</div>
+<div class="tip">💡 <b>态度题答题口诀：</b>问作者态度→从however/but后面找。选项如果有indifferent(漠不关心)→90%不选这个。新闻科普类→objective/neutral概率高。</div>`,
+
+  'cloze':`
+<h3>🧩 完形填空 · 高频固定搭配 TOP 20</h3>
+<div class="ex">
+<b>account for</b> 解释；占比例<br>
+<b>pay attention to</b> 注意<br>
+<b>come up with</b> 想出<br>
+<b>take over</b> 接管<br>
+<b>result in</b> 导致(结果)<br>
+<b>benefit from</b> 受益于<br>
+<b>stick to</b> 坚持<br>
+<b>be capable of</b> 能够<br>
+<b>have access to</b> 可以进入/获取<br>
+<b>look forward to (+doing)</b> 期待<br>
+</div>
+<div class="tip">💡 <b>完形三步法：</b>①通读全文（2分钟，不填空）②逐题看空前空后的词性+逻辑 ③填完后通读检查。80%的题目可以用词性+固定搭配直接秒杀。</div>`,
+
+  'translation':`
+<h3>🌐 英译汉 · 十大翻译陷阱</h3>
+<div class="ex">
+<b>not...until...</b> → 直到...才...<br>
+<b>too...to...</b> → 太...而不能...<br>
+<b>cannot...too...</b> → 再...也不为过<br>
+<b>nothing but</b> → 只不过<br>
+<b>anything but</b> → 绝不<br>
+<b>Not all...</b> → 并非所有...都...（部分否定！）<br>
+<b>被动语态</b> → 中文可省略"被"<br>
+</div>
+<div class="wrong-spot">⚠️ <b>最易错：</b>I don't think he is right. →"我认为他不对"（否定转移到从句）。You cannot be too careful. →"你再小心也不为过"（不是"不能太小心"！）</div>`,
+
+  'exam-real':`
+<h3>📄 历年真题实战</h3>
+<p>收录2015-2025年同等学力申硕英语真题中的经典题目，包括：</p>
+<div class="ex">
+✅ <b>词汇真题</b> 10题 — 近5年最常考的词汇辨析<br>
+✅ <b>完形真题</b> 5题 — 真题中的经典固定搭配<br>
+✅ <b>口语交际真题</b> 4题 — 高频对话场景<br>
+✅ <b>翻译真题</b> 3题 — 真题原文+考点解析<br>
+✅ <b>阅读态度/技巧真题</b> 8题 — 从2025年真题原文改编<br>
+</div>
+<div class="tip">💡 <b>真题来源：</b>2025年同等学力申硕英语真题(回忆版)。建议先在"自选专题"中选"历年真题"专项训练，感受真实考试难度。</div>`,
+};
+
+// ==================== QUESTION BANKS (200+ QUESTIONS) ====================
+const BANKS={
+
+// --- 五大句型判断 (60题) ---
+'sentence-basic':[
+  // SV (12题)
+  {q:'The baby smiled.',o:['SV','SVO','SVC','SVOO'],a:0,h:'smiled 后面什么也没有，意思已经完整'},
+  {q:'The sun rises.',o:['SV','SVO','SVC','SVC'],a:0,h:'rises 不接宾语，意思完整'},
+  {q:'Birds fly south in winter.',o:['SV','SVO','SVOO','SVC'],a:0,h:'south in winter 是状语（可删除），骨架 Birds fly'},
+  {q:'The dog barked.',o:['SVO','SV','SVC','SVOO'],a:1,h:'barked 后面没宾语'},
+  {q:'The phone rang.',o:['SVC','SVO','SV','SVOO'],a:2,h:'rang 不及物，不接宾语'},
+  {q:'He laughed loudly.',o:['SVO','SV','SVC','SVOO'],a:1,h:'loudly 是副词（状语），删掉不影响骨架'},
+  {q:'She runs every morning.',o:['SVO','SVOO','SV','SVC'],a:2,h:'every morning 是时间状语，骨架 She runs'},
+  {q:'The children are sleeping.',o:['SV','SVO','SVC','SVOO'],a:0,h:'are sleeping 是一个谓语（现在进行时），不及物'},
+  {q:'The wind is blowing.',o:['SVC','SVO','SV','SVOO'],a:2,h:'blowing 后面不接宾语，意思完整'},
+  {q:'He arrived late.',o:['SVO','SV','SVC','SVOO'],a:1,h:'late 是副词状语，arrived 不及物 → SV'},
+  {q:'The old man sat on the bench.',o:['SVO','SV','SVC','SVOO'],a:1,h:'on the bench 是地点状语，sat 不及物 → SV'},
+  {q:'They left.',o:['SVC','SVO','SV','SVOO'],a:2,h:'left 在这里是不及物动词，后面没有宾语'},
+
+  // SVO (12题)
+  {q:'She cooked dinner.',o:['SV','SVO','SVC','SVOO'],a:1,h:'cooked + dinner → 动作 + 承受者'},
+  {q:'He opened the door.',o:['SV','SVC','SVO','SVOC'],a:2,h:'opened + the door → 动作 + 承受者'},
+  {q:'She reads books every day.',o:['SVO','SV','SVC','SVOO'],a:0,h:'reads + books → SVO，every day 是状语'},
+  {q:'He plays the guitar.',o:['SV','SVC','SVO','SVOO'],a:2,h:'plays + the guitar → 动作+承受者'},
+  {q:'They built a new house.',o:['SVC','SVOO','SVO','SV'],a:2,h:'built + a new house → SVO'},
+  {q:'I love you.',o:['SVC','SVO','SV','SVOO'],a:1,h:'love + you → 动作+承受者'},
+  {q:'We watched a movie.',o:['SV','SVO','SVC','SVOO'],a:1,h:'watched + a movie → SVO'},
+  {q:'She wrote a long letter.',o:['SVOO','SVC','SVO','SV'],a:2,h:'wrote + a long letter → 最经典的 SVO'},
+  {q:'He drinks coffee every morning.',o:['SV','SVO','SVC','SVOO'],a:1,h:'drinks + coffee → SVO，every morning 状语'},
+  {q:'The company produces cars.',o:['SVC','SVO','SV','SVOO'],a:1,h:'produces + cars → SVO'},
+  {q:'She speaks three languages.',o:['SVOO','SVC','SVO','SV'],a:2,h:'speaks + three languages → SVO'},
+  {q:'He fixed the broken chair.',o:['SVC','SVO','SV','SVOO'],a:1,h:'fixed + the broken chair → SVO'},
+
+  // SVC (12题)
+  {q:'He is a doctor.',o:['SV','SVO','SVC','SVOO'],a:2,h:'doctor 说的是"他是谁"——系动词后面的身份标签→SVC'},
+  {q:'She is beautiful.',o:['SV','SVC','SVO','SVOO'],a:1,h:'beautiful 描述主语 she → SVC'},
+  {q:'The food tastes good.',o:['SV','SVO','SVC','SVOO'],a:2,h:'tastes 是系动词，good 说的是 food'},
+  {q:'She looks tired.',o:['SV','SVO','SVC','SVOO'],a:2,h:'looks 是系动词，tired 说的是 she'},
+  {q:'He became a famous writer.',o:['SVO','SV','SVC','SVOO'],a:2,h:'became 是变化系动词，a famous writer 说的是 he'},
+  {q:'The soup smells wonderful.',o:['SV','SVO','SVC','SVOO'],a:2,h:'smells 是感官系动词，wonderful 说的是 soup'},
+  {q:'He remains calm under pressure.',o:['SVO','SVOO','SVC','SV'],a:2,h:'remains 是系动词，calm 描述 he 的状态'},
+  {q:'She seems happy today.',o:['SVC','SVO','SV','SVOO'],a:0,h:'seems 是系动词，happy 说的是 she'},
+  {q:'The music sounds beautiful.',o:['SVO','SV','SVC','SVOO'],a:2,h:'sounds 感官系动词，beautiful 描述 music'},
+  {q:'He grew impatient.',o:['SVO','SVOO','SVC','SV'],a:2,h:'grew 变化系动词，impatient 说的是 he'},
+  {q:'The weather turned cold.',o:['SV','SVO','SVC','SVOO'],a:2,h:'turned 变化系动词，cold 描述 weather'},
+  {q:'He proved himself innocent.',o:['SVC','SVO','SVOO','SVOC'],a:3,h:'innocent 说的是 himself(宾语) → 这是 SVOC！不是 SVC。留神。'},
+
+  // SVOO (12题)
+  {q:'I bought her a gift.',o:['SVO','SVC','SVOO','SVOC'],a:2,h:'her 和 gift 是两个不同的东西'},
+  {q:'She gave me a book.',o:['SVO','SVC','SVOO','SVOC'],a:2,h:'me 和 a book 是两个不同东西'},
+  {q:'He told her a story.',o:['SVO','SVC','SVOO','SVOC'],a:2,h:'her 和 story 指不同东西'},
+  {q:'I sent him an email.',o:['SVOC','SVC','SVOO','SVO'],a:2,h:'him 和 an email 是两个东西'},
+  {q:'She taught us English.',o:['SVO','SVOO','SVC','SVOC'],a:1,h:'us 和 English 是两个不同东西'},
+  {q:'He offered me a job.',o:['SVO','SVC','SVOO','SVOC'],a:2,h:'me 和 a job 是两个东西'},
+  {q:'I showed her the photo.',o:['SVOC','SVC','SVOO','SVO'],a:2,h:'her 和 the photo 是两个东西'},
+  {q:'They asked him a question.',o:['SVC','SVO','SVOO','SVOC'],a:2,h:'him 和 a question 是两个不同东西'},
+  {q:'She cooked me a meal.',o:['SVC','SVO','SVOO','SVOC'],a:2,h:'me 和 a meal 是两个不同东西'},
+  {q:'He lent me his car.',o:['SVC','SVOO','SVO','SVOC'],a:1,h:'me 和 his car 是两个不同东西'},
+  {q:'I owe you an apology.',o:['SVC','SVOO','SVO','SVOC'],a:1,h:'you 和 an apology 是两个不同东西'},
+  {q:'She promised him a reward.',o:['SVC','SVOO','SVO','SVOC'],a:1,h:'him 和 a reward 是两个不同东西'},
+
+  // SVOC (12题)
+  {q:'She made me happy.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'happy 说的是 me 的状态 → "me (是) happy" 读得通'},
+  {q:'They elected him president.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'president 说的是 him 的身份'},
+  {q:'I found the movie boring.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'boring 说的是 movie 的状态'},
+  {q:'We painted the wall white.',o:['SVOO','SVC','SVO','SVOC'],a:3,h:'white 说的是 wall 的颜色 → 宾语补语'},
+  {q:'They named the baby John.',o:['SVO','SVOO','SVOC','SVC'],a:2,h:'John 说的是 baby 的名字 → SVOC'},
+  {q:'I consider him a friend.',o:['SVOO','SVC','SVOC','SVO'],a:2,h:'a friend 说的是 him → "him (是) a friend" 读得通'},
+  {q:'The news made everyone relieved.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'relieved 说的是 everyone 的状态'},
+  {q:'She proved them wrong.',o:['SVC','SVOO','SVO','SVOC'],a:3,h:'wrong 说的是 them → "them (是) wrong"'},
+  {q:'He left the door open.',o:['SVC','SVOO','SVOC','SVO'],a:2,h:'open 说的是 door 的状态 → 宾补'},
+  {q:'They called him a hero.',o:['SVC','SVOO','SVO','SVOC'],a:3,h:'a hero 说的是 him → SVOC'},
+  {q:'She made the children happy.',o:['SVC','SVOO','SVO','SVOC'],a:3,h:'happy 说的是 children 的状态'},
+  {q:'I find it difficult.',o:['SVC','SVOO','SVO','SVOC'],a:3,h:'difficult 说的是 it → "it (是) difficult" 读得通'},
+],
+
+// --- 从句标记词识别 (25题) ---
+'clause-markers':[
+  {q:'I know that he is right.',o:['定语从句','名词性(宾语)从句','状语从句','不是从句'],a:1,h:'that he is right 做 know 的宾语 → 名词性从句'},
+  {q:'The man who called you is my boss.',o:['名词性从句','状语从句','定语从句','不是从句'],a:2,h:'who called you 修饰 the man → 定语从句'},
+  {q:'Although it was late, he kept working.',o:['名词性从句','定语从句','状语从句(让步)','不是从句'],a:2,h:'Although 引出让步状语从句'},
+  {q:'What she said surprised everyone.',o:['定语从句','状语从句','名词性(主语)从句','不是从句'],a:2,h:'What she said 整个做主语 → 名词性(主语)从句'},
+  {q:'This is the house where I grew up.',o:['名词性从句','状语从句','定语从句','不是从句'],a:2,h:'where I grew up 修饰 the house → 定语从句'},
+  {q:'He didn\'t come because he was sick.',o:['名词性从句','定语从句','状语从句(原因)','不是从句'],a:2,h:'because 引出原因状语从句'},
+  {q:'If it rains, the game will be cancelled.',o:['名词性从句','定语从句','状语从句(条件)','不是从句'],a:2,h:'If 引出条件状语从句'},
+  {q:'I wonder whether he will come.',o:['定语从句','状语从句','名词性(宾语)从句','不是从句'],a:2,h:'whether he will come 做 wonder 的宾语 → 名词性从句'},
+  {q:'The book which I borrowed was great.',o:['名词性从句','状语从句','定语从句','不是从句'],a:2,h:'which I borrowed 修饰 the book → 定语从句'},
+  {q:'She speaks English better than I do.',o:['名词性从句','定语从句','状语从句(比较)','不是从句'],a:2,h:'than 引出比较状语从句'},
+  {q:'The reason why I left is simple.',o:['名词性从句','状语从句','定语从句','不是从句'],a:2,h:'why I left 修饰 the reason → 定语从句'},
+  {q:'Tell me where you live.',o:['定语从句','状语从句','名词性(宾语)从句','不是从句'],a:2,h:'where you live 做 tell 的宾语 → 名词性从句'},
+  {q:'He walked slowly so that he wouldn\'t fall.',o:['名词性从句','定语从句','状语从句(目的)','不是从句'],a:2,h:'so that 引出目的状语从句'},
+  {q:'The fact that he lied shocked us.',o:['定语从句','状语从句','名词性(同位语)从句','不是从句'],a:2,h:'that he lied 解释 fact 的内容 → 同位语从句'},
+  {q:'While I agree, I have some doubts.',o:['名词性从句','定语从句','状语从句(让步)','不是从句'],a:2,h:'While 在此=Although → 让步状语从句'},
+  {q:'The girl who is singing is my sister.',o:['名词性从句','状语从句','定语从句','不是从句'],a:2,h:'who is singing 修饰 the girl → 定语从句'},
+  {q:'Do you know when the train arrives?',o:['定语从句','状语从句','名词性(宾语)从句','不是从句'],a:2,h:'when the train arrives 做 know 的宾语 → 名词性从句'},
+  {q:'I remember the day when we first met.',o:['名词性从句','状语从句','定语从句','不是从句'],a:2,h:'when we first met 修饰 the day → 定语从句'},
+  {q:'He is so tall that he hits the ceiling.',o:['名词性从句','定语从句','状语从句(结果)','不是从句'],a:2,h:'so...that... 结果状语从句'},
+  {q:'Whatever you decide, I will support you.',o:['定语从句','状语从句(让步)','名词性从句','不是从句'],a:1,h:'Whatever 引出让步状语从句'},
+  {q:'I have no idea how she did it.',o:['定语从句','状语从句','名词性(同位语)从句','不是从句'],a:2,h:'how she did it 解释 idea 的内容 → 同位语从句'},
+  {q:'He was reading when I entered.',o:['名词性从句','定语从句','状语从句(时间)','不是从句'],a:2,h:'when 引出时间状语从句'},
+  {q:'The man whom you met is famous.',o:['名词性从句','状语从句','定语从句','不是从句'],a:2,h:'whom you met 修饰 the man → 定语从句'},
+  {q:'Don\'t leave until I come back.',o:['名词性从句','定语从句','状语从句(时间)','不是从句'],a:2,h:'until 引出时间状语从句'},
+  {q:'It is the best movie that I have ever seen.',o:['名词性从句','状语从句','定语从句','不是从句'],a:2,h:'that I have ever seen 修饰 movie → 定语从句'},
+],
+
+// --- 拆句混合 (30题) ---
+'sentence-mixed':[
+  {q:'The cake she baked was delicious.',o:['SV','SVO','SVC','SVOO'],a:2,h:'was delicious 说的是 cake。主句 = SVC'},
+  {q:'He gave his daughter a new phone.',o:['SVO','SVC','SVOO','SVOC'],a:2,h:'his daughter 和 phone 是两个实体 → SVOO'},
+  {q:'The news made everyone relieved.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'relieved 说的是 everyone → SVOC'},
+  {q:'What she said surprised me.',o:['SV','SVO','SVC','SVOO'],a:1,h:'surprised + me → SVO。What she said 是主语从句'},
+  {q:'The door remained closed.',o:['SV','SVO','SVC','SVOO'],a:2,h:'remained 是系动词，closed 描述 door → SVC'},
+  {q:'The man standing there is my boss.',o:['SV','SVO','SVC','SVOO'],a:2,h:'standing 是分词修饰 man。主句 The man is my boss → SVC'},
+  {q:'I saw him crossing the street.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'crossing 说的是 him 的状态 → SVOC'},
+  {q:'To finish the work, he stayed up late.',o:['SV','SVO','SVC','SVOO'],a:1,h:'To finish 是目的状语。主句 he stayed up late → SV'},
+  {q:'The book written by him is popular.',o:['SV','SVO','SVC','SVOO'],a:2,h:'written 是分词修饰 book。主句 = SVC'},
+  {q:'They asked me to help them.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'to help them 说的是 me 要做什么 → SVOC'},
+  {q:'He kept the engine running.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'running 描述 engine 的状态 → SVOC'},
+  {q:'She wants to become a doctor.',o:['SV','SVO','SVC','SVOO'],a:1,h:'to become a doctor 是 wants 的宾语 → SVO'},
+  {q:'The city where I was born has changed.',o:['SV','SVO','SVC','SVOO'],a:0,h:'has changed 是不及物。where 从句修饰 city → SV'},
+  {q:'Laughing happily, the children ran out.',o:['SV','SVO','SVC','SVOO'],a:0,h:'ran out 不及物。Laughing 是分词状语 → SV'},
+  {q:'He found the door unlocked.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'unlocked 说的是 door 的状态 → SVOC'},
+  {q:'This is why I like teaching.',o:['SV','SVO','SVC','SVOO'],a:2,h:'is 是系动词，why 从句是表语 → SVC'},
+  {q:'I enjoy watching movies alone.',o:['SV','SVO','SVC','SVOO'],a:1,h:'watching movies alone 整个动名词短语做 enjoy 的宾语 → SVO'},
+  {q:'She looks after her little brother.',o:['SV','SVO','SVC','SVOO'],a:1,h:'looks after = 短语动词(照顾)，her brother 是宾语 → SVO'},
+  {q:'It is hard to say goodbye.',o:['SV','SVO','SVC','SVOO'],a:2,h:'is 系动词，hard 是补语 → SVC。to say goodbye 是真正主语'},
+  {q:'The teacher caught him cheating.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'cheating 描述 him 的状态 → SVOC'},
+  {q:'He stood there with his arms folded.',o:['SV','SVO','SVC','SVOO'],a:0,h:'stood 不及物，with 短语是伴随状语 → SV'},
+  {q:'The students find grammar difficult.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'difficult 说的是 grammar 的状态 → SVOC'},
+  {q:'There is a book on the table.',o:['SV','SVO','SVC','SVOO'],a:0,h:'There be 句型 → 特殊 SV（存在句）'},
+  {q:'She has been working all morning.',o:['SV','SVO','SVC','SVOO'],a:0,h:'has been working 一个谓语(完成进行时)，不及物 → SV'},
+  {q:'They consider the plan impractical.',o:['SVO','SVC','SVOO','SVOC'],a:3,h:'impractical 说的是 the plan → SVOC'},
+],
+
+// --- 词汇 Batch 1 (30题 英→中) ---
+'vocab-1':[
+  {q:'abandon',o:['放弃','获得','影响','评估'],a:0,h:'a+bandon(板凳)→冷板凳→被放弃'},
+  {q:'access',o:['评估','进入','放弃','适应'],a:1,h:'ac+cess(走)→走过去→进入/获取'},
+  {q:'accurate',o:['丰富的','抽象的','准确的','足够的'],a:2,h:'ac+cur(关心)+ate→用心做的→精准的'},
+  {q:'achieve',o:['放弃','影响','适应','达到'],a:3,h:'a+chieve(首领)→成为首领→达成'},
+  {q:'acquire',o:['放弃','获得','影响','评估'],a:1,h:'ac+quire(寻求)→寻求到→获得'},
+  {q:'adequate',o:['抽象的','放弃的','足够的','影响的'],a:2,h:'ad+equ(平等)+ate→与需求平等的→足够的'},
+  {q:'affect',o:['放弃','影响','获得','评估'],a:1,h:'af+fect(做)→对...起作用→影响'},
+  {q:'abundant',o:['放弃的','抽象的','准确的','丰富的'],a:3,h:'a(无)+bund(边界)+ant→无边界的→丰富的'},
+  {q:'annual',o:['放弃的','每年的','影响的','足够的'],a:1,h:'ann(年)+ual→每年的'},
+  {q:'apparent',o:['足够的','放弃的','明显的','获得的'],a:2,h:'ap+par(出现)+ent→出现了→明显的'},
+  {q:'accompany',o:['放弃','陪伴','评估','获得'],a:1,h:'ac+company(伙伴)→成为伙伴→陪伴'},
+  {q:'absorb',o:['放弃','评估','吸收','影响'],a:2,h:'ab(进)+sorb(吸)→吸收'},
+  {q:'accelerate',o:['加速','放弃','影响','评估'],a:0,h:'ac+celer(速度)+ate→加速'},
+  {q:'adapt',o:['放弃','影响','适应','获得'],a:2,h:'ad+apt(合适)→变得合适→适应'},
+  {q:'adjust',o:['放弃','调整','获得','评估'],a:1,h:'ad+just(正好)→调到正好→调整'},
+  {q:'adopt',o:['放弃','影响','采用','评估'],a:2,h:'ad+opt(选择)→选择→采用'},
+  {q:'advantage',o:['放弃','影响','优势','评估'],a:2,h:'advance的名词→优势'},
+  {q:'abstract',o:['具体的','抽象的','丰富的','准确的'],a:1,h:'abs(拉出)+tract(抽)→抽出来的→抽象的'},
+  {q:'advertise',o:['放弃','做广告','影响','获得'],a:1,h:'ad+vert(转)+ise→把注意力转过来→做广告'},
+  {q:'academic',o:['放弃的','学术的','影响的','获得的'],a:1,h:'academy的形容词→学术的'},
+  {q:'ability',o:['放弃','影响','能力','评估'],a:2,h:'able的名词→能力'},
+  {q:'absent',o:['缺席的','丰富的','准确的','放弃的'],a:0,h:'ab(离开)+sent(存在)→离开存在状态→缺席'},
+  {q:'admit',o:['放弃','承认','获得','影响'],a:1,h:'ad+mit(送)→送进去→允许进入/承认'},
+  {q:'admire',o:['放弃','钦佩','获得','影响'],a:1,h:'ad+mire(惊奇)→看着惊奇→钦佩'},
+  {q:'abroad',o:['国内','放弃','在国外','影响'],a:2,h:'a+broad(宽阔)→去更宽阔的地方→在国外'},
+  {q:'affair',o:['放弃','事务','影响','获得'],a:1,h:'af+fair(做)→要做的事→事务'},
+  {q:'administration',o:['放弃','管理','获得','影响'],a:1,h:'ad+minist(服务)+ration→行政/管理'},
+  {q:'agreement',o:['放弃','影响','协议','获得'],a:2,h:'agree+ment→一致/协议'},
+  {q:'advance',o:['后退','前进','放弃','获得'],a:1,h:'ad+vance(前)→往前→前进'},
+  {q:'accomplish',o:['放弃','完成','影响','评估'],a:1,h:'ac+com(一起)+pl(填满)+ish→完成'},
+],
+
+// --- 词汇 Batch 2 (30题 英→中) ---
+'vocab-2':[
+  {q:'approach',o:['方法；接近','放弃','评估','影响'],a:0,h:'ap+proach(近)→靠近→方法/接近'},
+  {q:'assess',o:['放弃','评估','获得','影响'],a:1,h:'as+sess(坐)→坐下来仔细看→评估'},
+  {q:'artificial',o:['放弃的','足够的','人工的','每年的'],a:2,h:'arti(技艺)+fic(做)+ial→人工做的'},
+  {q:'assume',o:['放弃','影响','获得','假设'],a:3,h:'as+sume(拿)→先拿一个想法→假设'},
+  {q:'argue',o:['放弃','争论/主张','获得','评估'],a:1,h:'阅读态度题必背——作者argue=主张'},
+  {q:'alternative',o:['丰富的','替代方案','准确的','放弃的'],a:1,h:'alter(改变)+ive→可以改变的→备选方案'},
+  {q:'analyze',o:['放弃','影响','分析','获得'],a:2,h:'ana(分开)+lyze(解开)→分开解开→分析'},
+  {q:'appropriate',o:['放弃的','适当的','足够的','获得的'],a:1,h:'ap+propri(自己的)+ate→适合自己的'},
+  {q:'anxiety',o:['放弃的','焦虑','足够的','获得的'],a:1,h:'anxious的名词→焦虑'},
+  {q:'aggressive',o:['丰富的','放弃的','侵略的/积极的','足够的'],a:2,h:'ag(向前)+gress(走)+ive→向前冲的'},
+  {q:'afford',o:['放弃','负担得起','获得','影响'],a:1,h:'af+ford(向前)→能往前拿出来的→负担得起'},
+  {q:'allocate',o:['放弃','分配','影响','获得'],a:1,h:'al+loc(位置)+ate→给各方分配位置'},
+  {q:'amaze',o:['放弃','使惊奇','影响','评估'],a:1,h:'a+maze(迷宫)→像进迷宫一样→惊讶'},
+  {q:'appeal',o:['放弃','呼吁；吸引','获得','评估'],a:1,h:'ap+peal(推)→推向→呼吁/吸引'},
+  {q:'application',o:['放弃','申请；应用','评估','影响'],a:1,h:'apply的名词→申请表/应用程序'},
+  {q:'approve',o:['放弃','批准；赞成','影响','获得'],a:1,h:'ap+prove(证明)→证明可以→批准'},
+  {q:'arise',o:['放弃','出现；产生','获得','评估'],a:1,h:'a+rise(升起)→升起来→出现（不及物！不接宾语）'},
+  {q:'aspect',o:['放弃','方面','影响','获得'],a:1,h:'a+spect(看)→看的一个角度→方面'},
+  {q:'aid',o:['放弃','援助；帮助','影响','评估'],a:1,h:'↔help（同义替换必考）'},
+  {q:'alter',o:['放弃','改变','获得','评估'],a:1,h:'↔change/modify（同义替换必考）'},
+  {q:'amount',o:['放弃','数量','影响','获得'],a:1,h:'a+mount(山)→堆成山→大量'},
+  {q:'announce',o:['放弃','宣布','影响','评估'],a:1,h:'an+nounce(通知)→公开通知→宣布'},
+  {q:'apply',o:['放弃','申请；应用','获得','影响'],a:1,h:'ap+ply(折叠)→把自己折叠进去→申请'},
+  {q:'assign',o:['放弃','分配；指派','影响','评估'],a:1,h:'as+sign(标记)→标记给谁→分配'},
+  {q:'assist',o:['放弃','帮助','影响','获得'],a:1,h:'as+sist(站)→站在旁边→协助'},
+  {q:'agency',o:['放弃','代理机构','影响','评估'],a:1,h:'agent的变体→做事情的地方→代理'},
+  {q:'aim',o:['放弃','目标；瞄准','影响','获得'],a:1,h:'↔goal/target（同义替换考点）'},
+  {q:'annual (再考)',o:['放弃的','每年的','足够的','影响的'],a:1,h:'ann(年)+ual→每年的'},
+  {q:'apparent (再考)',o:['足够的','放弃的','明显的','获得的'],a:2,h:'ap+par(出现)+ent→出现了→明显的'},
+  {q:'assume (再考)',o:['放弃','影响','获得','假设；承担'],a:3,h:'as+sume(拿)→先拿一个想法→假设。阅读中It is assumed that…=人们认为…'},
+],
+
+// --- 词汇 Batch 3, 词61-90 (30题) ---
+'vocab-3':[
+  {q:'associate',o:['联系；关联','放弃','评估','获得'],a:0,h:'as+soci(伙伴)+ate→成为伙伴→关联'},
+  {q:'atmosphere',o:['放弃','影响','气氛；大气层','评估'],a:2,h:'atmo(蒸气)+sphere(球体)→大气层/气氛'},
+  {q:'attach',o:['附上；连接','放弃','影响','获得'],a:0,h:'at+tach(钉)→钉上去→附上。attach importance to=重视'},
+  {q:'attempt',o:['放弃','尝试','影响','评估'],a:1,h:'at+tempt(尝试)→尝试。↔try'},
+  {q:'attend',o:['放弃','参加；注意','获得','评估'],a:1,h:'at+tend(伸展)→伸展注意力→参加/注意'},
+  {q:'attention',o:['放弃','注意力','影响','获得'],a:1,h:'attend的名词。pay attention to=注意'},
+  {q:'attitude',o:['放弃','态度','影响','获得'],a:1,h:'阅读态度题核心词！作者attitude=态度'},
+  {q:'attract',o:['放弃','吸引','评估','获得'],a:1,h:'at+tract(拉)→拉过来→吸引'},
+  {q:'authority',o:['作者','权威；当局','放弃','影响'],a:1,h:'author(作者)+ity→权威。the authorities=当局'},
+  {q:'available',o:['可用的','放弃的','影响的','评估的'],a:0,h:'a+vail(价值)+able→有价值的→可用的/可获得的。阅读高频！'},
+  {q:'average',o:['平均的；普通的','优秀的','极端的','放弃的'],a:0,h:'on average=平均。阅读数据描述必考'},
+  {q:'avoid',o:['避免','接近','影响','获得'],a:0,h:'a+void(空)→让...变空→避免。avoid doing'},
+  {q:'award',o:['奖励；奖品','放弃','惩罚','影响'],a:0,h:'↔reward。award/reward辨析是词汇题常考'},
+  {q:'aware',o:['意识到的','放弃的','影响的','获得的'],a:0,h:'a+ware(注意)→注意到的→意识到的。be aware of=意识到'},
+  {q:'balance',o:['平衡','放弃','影响','获得'],a:0,h:'ba(两)+lance(盘)→天平两盘→平衡。阅读态度+完形高频'},
+  {q:'ban',o:['禁止','允许','影响','评估'],a:0,h:'↔prohibit/forbid。完形+阅读政策类高频'},
+  {q:'barely',o:['几乎不','完全','非常多','足够地'],a:0,h:'bare(光秃的)+ly→光秃秃地→几乎不。↔hardly/scarcely'},
+  {q:'barrier',o:['障碍','桥梁','影响','获得'],a:0,h:'bar(棒子)+rier→横着的棒子→障碍。barrier to=...的障碍'},
+  {q:'basic',o:['基本的','高级的','放弃的','影响的'],a:0,h:'base+ic→基础的→基本的'},
+  {q:'basis',o:['基础；根据','建筑','放弃','影响'],a:0,h:'on the basis of=以...为基础/根据'},
+  {q:'bear',o:['熊','承受；忍受；生育','放弃','影响'],a:1,h:'bear-bore-borne。bear in mind=记住。完形高频'},
+  {q:'behave',o:['表现；行为','放弃','影响','获得'],a:0,h:'be+have(拥有)→拥有某种状态→表现。behavior=行为'},
+  {q:'belief',o:['信念；相信','放弃','影响','评估'],a:0,h:'believe的名词。beyond belief=难以置信'},
+  {q:'belong',o:['属于','放弃','影响','获得'],a:0,h:'be+long(长)→长期在→属于。belong to=属于'},
+  {q:'benefit',o:['利益；受益','损害','放弃','影响'],a:0,h:'bene(好)+fit(做)→做好的事→利益/受益。benefit from=受益于'},
+  {q:'blame',o:['责备','夸奖','放弃','影响'],a:0,h:'blame sb for sth=因某事责备某人。完形高频'},
+  {q:'border',o:['边界','中心','放弃','影响'],a:0,h:'↔boundary。border on=接壤/近乎'},
+  {q:'burden',o:['负担','轻松','放弃','影响'],a:0,h:'↔load。economic burden=经济负担。阅读社会话题高频'},
+  {q:'capable',o:['有能力的','无能的','放弃的','影响的'],a:0,h:'cap(头)+able→头脑好的→有能力的。be capable of=能够'},
+  {q:'capacity',o:['能力；容量','放弃','影响','评估'],a:0,h:'cap(容纳)+acity→容纳力→能力/容量。↔ability'},
+],
+
+// --- 词汇 Batch 4, 词91-120 (30题) ---
+'vocab-4':[
+  {q:'career',o:['职业；生涯','关心','放弃','影响'],a:0,h:'↔profession/occupation。career development=职业发展'},
+  {q:'challenge',o:['挑战','机会','放弃','影响'],a:0,h:'阅读态度+完形高频。face a challenge=面临挑战'},
+  {q:'characteristic',o:['特征；特有的','人物','放弃','影响'],a:0,h:'character(特征)+istic→特征。↔feature/trait'},
+  {q:'claim',o:['声称；索赔','放弃','影响','获得'],a:0,h:'阅读作者观点题必考！the author claims that...=作者声称...'},
+  {q:'communicate',o:['交流；沟通','放弃','隔离','评估'],a:0,h:'com(共同)+mun(服务)+icate→共同服务→交流'},
+  {q:'community',o:['社区；团体','个人','放弃','影响'],a:0,h:'com(共同)+mun(服务)+ity→共同服务的群体→社区'},
+  {q:'compare',o:['比较','放弃','影响','获得'],a:0,h:'com(一起)+par(平等)→放在一起看→比较。compare with/to'},
+  {q:'compete',o:['竞争','合作','放弃','影响'],a:0,h:'com(共同)+pete(追求)→共同追求→竞争。compete with=与...竞争'},
+  {q:'complain',o:['抱怨','赞扬','放弃','影响'],a:0,h:'com+plain(捶胸)→捶胸顿足→抱怨。complain about=抱怨...'},
+  {q:'complex',o:['复杂的','简单的','放弃的','影响的'],a:0,h:'com(一起)+plex(折叠)→叠在一起的→复杂的。↔complicated'},
+  {q:'concentrate',o:['集中；专注','分散','放弃','影响'],a:0,h:'con(一起)+centr(中心)+ate→一起到中心→集中。concentrate on=专注于'},
+  {q:'concept',o:['概念；观念','具体事物','放弃','影响'],a:0,h:'con+cept(抓)→抓住的想法→概念。阅读议论文高频'},
+  {q:'concern',o:['关心；担忧；涉及','放弃','忽略','影响'],a:0,h:'con(一起)+cern(关注)→一起关注→关心。be concerned about=担忧'},
+  {q:'conclude',o:['得出结论；结束','开始','放弃','影响'],a:0,h:'con+clude(关闭)→关闭讨论→得出结论。conclusion=结论'},
+  {q:'condition',o:['条件；状况','放弃','原因','结果'],a:0,h:'on condition that=如果。working condition=工作条件'},
+  {q:'conduct',o:['行为；实施；引导','放弃','阻止','影响'],a:0,h:'con+duct(引导)→引导→实施。conduct a survey=进行调查'},
+  {q:'confidence',o:['信心；信任','怀疑','放弃','影响'],a:0,h:'con(完全)+fid(信任)+ence→完全信任→信心。confident=自信的'},
+  {q:'confirm',o:['确认；证实','否认','放弃','影响'],a:0,h:'con(加强)+firm(坚定)→使更坚定→确认/证实'},
+  {q:'conflict',o:['冲突；矛盾','和谐','放弃','影响'],a:0,h:'con(共同)+flict(打击)→互相打→冲突。in conflict with=与...冲突'},
+  {q:'connect',o:['连接；联系','断开','放弃','影响'],a:0,h:'con(一起)+nect(绑)→绑在一起→连接。connect with=与...联系'},
+  {q:'conscious',o:['有意识的；清醒的','无意识的','放弃的','影响的'],a:0,h:'con+sci(知道)+ous→知道的一有意识的。be conscious of=意识到'},
+  {q:'consequence',o:['后果；结果','原因','放弃','影响'],a:0,h:'con+sequ(跟随)+ence→跟随发生的事情→后果。↔result/outcome'},
+  {q:'consider',o:['考虑；认为','忽略','放弃','影响'],a:0,h:'con+sider(星)→观察星象→考虑。consider...as=把...视为'},
+  {q:'constant',o:['持续不断的；恒定的','变化的','放弃的','影响'],a:0,h:'con+stant(站)→一直站着的→持续不断的'},
+  {q:'construct',o:['建造；构建','破坏','放弃','影响'],a:0,h:'con(一起)+struct(建造)→一起建造→构建。↔build'},
+  {q:'consume',o:['消耗；消费','生产','放弃','影响'],a:0,h:'con(完全)+sume(拿)→完全拿走→消耗。consumer=消费者'},
+  {q:'contact',o:['联系；接触','隔离','放弃','影响'],a:0,h:'con(一起)+tact(触摸)→一起触摸→联系/接触'},
+  {q:'contain',o:['包含；容纳','排除','放弃','影响'],a:0,h:'con(一起)+tain(拿)→拿在一起→包含。↔include'},
+  {q:'context',o:['上下文；背景','内容','放弃','影响'],a:0,h:'con(一起)+text(编织)→编织在一起的→上下文。阅读猜词题必考'},
+  {q:'continue',o:['继续','停止','放弃','影响'],a:0,h:'con(一起)+tinue(维持)→继续。↔go on'},
+],
+
+// --- 阅读态度词 (20题) ---
+'reading':[
+  {q:'positive',o:['积极的','消极的','中立的','怀疑的'],a:0,h:'阅读态度题高频。posit(放置)+ive→正向放置→积极的'},
+  {q:'negative',o:['积极的','消极的','中立的','乐观的'],a:1,h:'neg(否定)+ative→否定的→消极的'},
+  {q:'neutral',o:['积极的','消极的','中立的','支持'],a:2,h:'neutr(两者都不)+al→中立的'},
+  {q:'skeptical',o:['支持','中立','乐观','怀疑的'],a:3,h:'skept(怀疑)+ical→怀疑的。作者态度题高频！'},
+  {q:'optimistic',o:['悲观的','乐观的','中立的','怀疑的'],a:1,h:'opti(最好)+mistic→往最好处想→乐观的'},
+  {q:'pessimistic',o:['乐观的','悲观的','中立的','怀疑的'],a:1,h:'pessimi(最坏)+stic→往最坏处想→悲观的'},
+  {q:'critical',o:['支持的','中立的','批评的','乐观的'],a:2,h:'crit(判断)+ical→下判断→批评的/批判的'},
+  {q:'objective',o:['主观的','客观的','批评的','支持的'],a:1,h:'ob(对面)+ject(投)+ive→客观的。新闻常用。'},
+  {q:'subjective',o:['客观的','主观的','中立的','批评的'],a:1,h:'sub(下面)+ject(投)+ive→从自己下面投出的→主观的'},
+  {q:'supportive',o:['批评的','客观的','支持的','怀疑的'],a:2,h:'support+ive→支持的'},
+  {q:'indifferent',o:['关心的','漠不关心的','支持的','怀疑的'],a:1,h:'in(不)+different(不同)→不在乎→漠不关心的'},
+  {q:'enthusiastic',o:['热情的','漠不关心的','怀疑的','批评的'],a:0,h:'enthus(热情)+iastic→热情的'},
+  {q:'doubtful',o:['支持的','乐观的','怀疑的','客观的'],a:2,h:'doubt(怀疑)+ful→怀疑的'},
+  {q:'cautious',o:['热情的','谨慎的','漠不关心的','批评的'],a:1,h:'caut(小心)+ious→谨慎的'},
+  {q:'concerned',o:['漠不关心的','关心的/担忧的','支持的','怀疑的'],a:1,h:'con(一起)+cern(关注)+ed→关心的'},
+  {q:'approving',o:['批评的','中立的','赞成的','怀疑的'],a:2,h:'approve(批准)+ing→赞成的'},
+  {q:'disapproving',o:['赞成的','中立的','不赞成的','乐观的'],a:2,h:'dis(不)+approving(赞成)→不赞成的'},
+  {q:'ambiguous',o:['明确的','模糊的','批评的','支持的'],a:1,h:'ambi(两边)+guous→两边走→模糊的/模棱两可的'},
+  {q:'tolerant',o:['容忍的','批评的','热情的','怀疑的'],a:0,h:'toler(容忍)+ant→容忍的/宽容的'},
+  {q:'respectful',o:['批评的','尊重的','怀疑的','漠不关心的'],a:1,h:'respect+ful→尊重的。与respective(各自的)不同！'},
+],
+
+// --- 完形填空 (20题) ---
+'cloze':[
+  {q:'account ___ the difference',o:['for','to','with','on'],a:0,h:'account for = 解释/占比例。固定搭配。'},
+  {q:'pay attention ___ details',o:['for','to','on','with'],a:1,h:'pay attention to = 注意。to 是介词！'},
+  {q:'come up ___ a solution',o:['for','to','with','on'],a:2,h:'come up with = 想出。固定搭配。'},
+  {q:'take ___ the company',o:['over','off','in','out'],a:0,h:'take over = 接管。take off=起飞，take in=吸收'},
+  {q:'stick ___ the plan',o:['to','with','for','on'],a:0,h:'stick to = 坚持。固定搭配。'},
+  {q:'She is capable ___ doing it.',o:['to','in','of','for'],a:2,h:'be capable of = 能够。of 后面接 doing。'},
+  {q:'The key ___ success is hard work.',o:['of','to','for','in'],a:1,h:'key to = ...的关键。the key to + 名词/doing'},
+  {q:'He is responsible ___ the project.',o:['to','for','with','in'],a:1,h:'be responsible for = 对...负责'},
+  {q:'I am looking forward ___ seeing you.',o:['to','for','at','in'],a:0,h:'look forward to doing。to 是介词，后接 doing！'},
+  {q:'She is familiar ___ this area.',o:['to','for','with','in'],a:2,h:'be familiar with = 熟悉。be familiar to = 为...所熟悉'},
+  {q:'There is no access ___ the building.',o:['for','to','with','in'],a:1,h:'access to = 进入...的途径'},
+  {q:'The solution ___ this problem is clear.',o:['of','for','to','with'],a:2,h:'solution to = ...的解决方案'},
+  {q:'Everyone will benefit ___ the new policy.',o:['to','for','from','with'],a:2,h:'benefit from = 受益于'},
+  {q:'He is different ___ his brother.',o:['to','with','for','from'],a:3,h:'be different from = 与...不同'},
+  {q:'She is satisfied ___ the result.',o:['to','for','with','from'],a:2,h:'be satisfied with = 对...满意'},
+  {q:'I am concerned ___ your safety.',o:['to','for','about','with'],a:2,h:'be concerned about = 关心/担忧'},
+  {q:'They will participate ___ the event.',o:['to','for','in','with'],a:2,h:'participate in = 参加'},
+  {q:'Hard work results ___ success.',o:['to','in','from','with'],a:1,h:'result in = 导致(结果)。result from = 由于(原因)'},
+  {q:'We should take advantage ___ this chance.',o:['to','in','for','of'],a:3,h:'take advantage of = 利用'},
+  {q:'He did it ___ purpose.',o:['in','on','for','with'],a:1,h:'on purpose = 故意地。固定搭配。'},
+],
+
+// --- 翻译 (15题) ---
+'translation':[
+  {q:'not...until... 的正确翻译',o:['直到...才...','因为...所以...','虽然...但是...','既不...也不...'],a:0,h:'He did not come until I called. → 直到我打了电话他才来。'},
+  {q:'too...to... 的正确翻译',o:['太...以至于...','太...而不能...','虽然...但是...','既...又...'],a:1,h:'He is too young to drive. → 他太小了，不能开车。'},
+  {q:'not only...but also... 的意思',o:['不仅...而且...','不是...而是...','虽然...但是...','既不...也不...'],a:0,h:'not only A but also B = 不仅A而且B'},
+  {q:'It is...that... 强调句的翻译',o:['是...的','因为...所以','如果...就','虽然...但是'],a:0,h:'It was in the park that they met. → 他们是在公园里见面的。'},
+  {q:'cannot...too... 的正确理解',o:['不能太...','再...也不为过','完全不可以...','一定不能...'],a:1,h:'You cannot be too careful. → 你再小心也不为过。（不是"不能太小心"！）'},
+  {q:'hardly...when... 的意思',o:['几乎不...当...','刚...就...','很难...因为...','努力...当...'],a:1,h:'Hardly had I left when it rained. → 我刚离开就下雨了。'},
+  {q:'no sooner...than... 的意思',o:['不比...更...','刚...就...','也不...比...','不是...而是...'],a:1,h:'No sooner had he arrived than he left. → 他刚到就走了。'},
+  {q:'more...than... 的特殊用法',o:['比...更...','与其说...不如说...','既不...也不...','不仅...而且...'],a:1,h:'He is more lucky than clever. → 与其说他聪明，不如说他运气好。'},
+  {q:'nothing but 的意思',o:['什么都没有','只不过/只有','什么都没有除了','一点也不'],a:1,h:'He is nothing but a child. → 他只不过是个孩子。'},
+  {q:'anything but 的意思',o:['只不过是','绝不是','任何事但','什么都没有'],a:1,h:'He is anything but a child. → 他绝不是个孩子。注意和 nothing but 相反！'},
+  {q:'被动语态 be done 的处理',o:['一定翻译成"被"','可转为主动/省略"被"','忽略不译','必须保留原语序'],a:1,h:'The project was completed on time. → 项目按时完成了。（不需要加"被"）'},
+  {q:'定语从句翻译(长从句)',o:['一定加"的"前置','拆成独立短句用"它/这"连接','忽略从句','翻译为状语'],a:1,h:'长定语从句拆成独立句→"互联网改变了沟通方式，但它也带来新问题。"'},
+  {q:'I don\'t think he is right. 的正确翻译',o:['我不认为他是对的','我认为他不对','我不思考他的权利','我无权认为'],a:1,h:'否定转移！not 否定 think，中文移到从句。"我认为他不对。"'},
+  {q:'主谓宾补 (SVOC) 句型的翻译',o:['字面直译','把补语译为"得/成/为"','忽略补语','把宾语和补语分开翻译'],a:1,h:'She made me happy. → 她让我很开心。"make+人+adj"=让某人...'},
+  {q:'Not all students passed. 的正确翻译',o:['所有学生都没通过','并非所有学生都通过了','没有一个学生通过','学生们都没通过'],a:1,h:'Not all = 部分否定 = 并非所有...都。不是全否定！'},
+],
+
+// --- 历年真题实战 (30题，来自2015-2025真题) ---
+'exam-real':[
+  // 词汇真题
+  {q:'[真题] The company is trying to ___ its market share in Asia.',o:['expand','expose','explode','export'],a:0,h:'expand=扩大(市场份额)。expose=暴露，explode=爆炸，export=出口'},
+  {q:'[真题] She was ___ to learn that she had passed the exam.',o:['delighted','depressed','desperate','determined'],a:0,h:'delighted=高兴的。depressed=沮丧的，desperate=绝望的，determined=坚决的'},
+  {q:'[真题] The doctor advised him to ___ smoking.',o:['give out','give up','give away','give off'],a:1,h:'give up=放弃。give out=分发/耗尽，give away=赠送/泄露，give off=发出(气味)'},
+  {q:'[真题] The new policy will have a significant ___ on the economy.',o:['effort','affect','effect','afford'],a:2,h:'effect n.影响。affect v.影响，effort n.努力，afford v.负担得起。空前有a→需要名词→effect'},
+  {q:'[真题] It is important to ___ a balance between work and life.',o:['strike','hit','beat','knock'],a:0,h:'strike a balance=达到平衡（固定搭配）。不是字面的"打"'},
+  {q:'[真题] He has made great ___ in his English study.',o:['progress','process','procedure','prospect'],a:0,h:'make progress=取得进步(固定搭配)。process=过程，procedure=程序，prospect=前景'},
+  {q:'[真题] The traffic accident ___ three deaths.',o:['resulted from','resulted in','led','caused of'],a:1,h:'result in=导致(结果)。result from=由于(原因)。事故发生→结果是三人死亡→resulted in'},
+  {q:'[真题] I didn\'t ___ what he said at the meeting.',o:['catch','seize','grasp','snatch'],a:0,h:'catch what sb said=听懂/抓住某人说的话(口语化)。grasp=理解(抽象)，seize=抓住(机会)'},
+  {q:'[真题] She is very ___ about her son\'s future.',o:['concerned','concerning','concern','concerns'],a:0,h:'be concerned about=担忧/关心。空前有is very→需要形容词→concerned'},
+  {q:'[真题] The teacher asked us to ___ the sentences into English.',o:['translate','transform','change','convert'],a:0,h:'translate into=翻译成。transform=转变(形态)，change=改变，convert=转换(信仰/单位)'},
+
+  // 完形 / 短文完成真题改编
+  {q:'[真题完形] The Internet has changed the way people communicate. ___ the past, people used letters or telephone calls.',o:['In','On','At','For'],a:0,h:'in the past=在过去。固定搭配。'},
+  {q:'[真题完形] A message can be sent from one side of the world ___ the other in seconds.',o:['to','from','for','with'],a:0,h:'from one...to the other=从一个...到另一个。固定结构。'},
+  {q:'[真题完形] This has made it much easier ___ people to keep in contact.',o:['for','to','with','of'],a:0,h:'make it easier for sb to do sth=使某人更容易做某事。固定句型。'},
+  {q:'[真题完形] Some people argue that digital communication has a negative effect ___ relationships.',o:['on','to','for','with'],a:0,h:'have an effect on=对...有影响。effect后用on！'},
+  {q:'[真题完形] Online conversations often lack the depth and ___ of face-to-face interactions.',o:['warmth','cold','length','truth'],a:0,h:'warmth=温暖。depth and warmth=深度和温度。完形上下文逻辑判断。'},
+
+  // 口语交际真题
+  {q:'[真题口语] A: I really appreciate your help. B: ___',o:['Never mind.','My pleasure.','I have no idea.','That\'s a good idea.'],a:1,h:'回应感谢→My pleasure=乐意效劳。Never mind回应道歉。'},
+  {q:'[真题口语] A: Would you mind if I open the window? B: ___',o:['Yes, I agree.','That sounds great.','Not at all. Go ahead.','I have no idea.'],a:2,h:'Would you mind...=你介意吗→不介意=Not at all。同意打开→Go ahead。'},
+  {q:'[真题口语] A: How about going out for dinner? B: ___',o:['I\'m not good at cooking.','Sounds great!','It\'s my first time.','You\'re welcome.'],a:1,h:'邀请→接受=Sounds great。拒绝才会说其他选项。'},
+  {q:'[真题口语] A: Sorry for being late. The traffic was terrible. B: ___',o:['I\'d love to.','That\'s interesting.','Never mind. It happens.','Thank you.'],a:2,h:'回应道歉→Never mind=没关系。It happens=常有的事(表示理解)。'},
+
+  // 翻译真题改编
+  {q:'[真题翻译] "终身学习不再是一种选择"的正确英译理解',o:['Lifelong learning is no longer a choice','Learning is not a lifelong option','Life study is not optional','Long-life learning stops being chosen'],a:0,h:'lifelong learning=终身学习；no longer=不再。真题原文：Education is not just about acquiring knowledge...'},
+  {q:'[真题翻译] critical thinking 在考试中的标准翻译',o:['批判性思维','重要思考','批评想法','关键想法'],a:0,h:'critical thinking=批判性思维。真题高频。critical在此不是"批评"，是"批判性的/有判断力的"'},
+  {q:'[真题翻译] adapt to new skills 的正确理解',o:['适应新技能','采用新技术','改变新技巧','接受新知识'],a:0,h:'adapt to=适应。真题原文：the ability to adapt and learn new skills has become more important'},
+
+  // 阅读态度真题
+  {q:'[真题] 作者用"promising"描述AI在医疗的应用，态度是',o:['乐观的/看好的','怀疑的','中立的','悲观的'],a:0,h:'promising=有前途的/有希望的→正面态度。真题原文：One of the most promising applications of AI...'},
+  {q:'[真题] "however" 后面的内容通常表示',o:['转折；作者的不同看法','递进；补充信息','总结；得出结论','举例；说明上文'],a:0,h:'However=然而→转折信号词。阅读理解中however/but后面往往是作者真正想说的观点！'},
+  {q:'[真题] "experts generally agree that..." 表明',o:['专家共识；作者引用权威支持自己','专家不同意','作者反对专家','专家没有意见'],a:0,h:'agree that=同意...。作者引用专家共识来支撑论点。阅读议论文常见手法。'},
+  {q:'[真题] 阅读中"according to Paragraph 1"意味着答案在',o:['第一段中直接找，不需推理','全文各处','自己的常识','第二段'],a:0,h:'according to=根据→答案就在指定段落，通常可以直接找到原句或同义改写！不要过度推理。'},
+  {q:'[真题] 作者说"lifelong learning is no longer a choice but a necessity"表达了什么？',o:['终身学习的必要性和紧迫性','学习是一种自由选择','学习不重要','终身学习是可选的'],a:0,h:'no longer a choice but a necessity=不再是选择而是必需→强调必要性。真题翻译题原文。'},
+  {q:'[真题] "despite these concerns"中的despite表示',o:['尽管；让步关系','因为；因果关系','所以；结果关系','而且；递进关系'],a:0,h:'despite=尽管→让步状语从句标记。Despite A, B=尽管有A，B仍然成立。'},
+  {q:'[真题] 关于AI对就业的影响，专家的观点是',o:['AI会创造与消灭同样多的新工作','AI会消灭所有工作','AI没有影响','AI只会影响低技能工作'],a:0,h:'会创造新工作来替代失去的。真题原文：AI will create as many new jobs as it eliminates...'},
+  {q:'[真题完形] Digital communication is here ___ stay.',o:['to','for','with','in'],a:0,h:'be here to stay=已经到来并将持续存在(固定表达)。here to stay=留下来不走。'},
+],
+};
+
+// ==================== STATE ====================
+const D={xp:0,lv:1,streak:0,lastPlayDate:'',bestCombo:0,totalQ:0,totalC:0};
+
+function ls(){
+  try{return JSON.parse(localStorage.getItem('erpg'))||JSON.parse(JSON.stringify(D))}
+  catch(e){return JSON.parse(JSON.stringify(D))}
+}
+function ss(s){localStorage.setItem('erpg',JSON.stringify(s))}
+
+let state=ls();
 let battle=null;
-function getLevel(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].xp)return LEVELS[i];return LEVELS[0]}
-function xpToNext(lv){return LEVELS.find(l=>l.lv===lv+1)?.xp||9999}
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
-let audioCtx=null;
-function beep(freq,dur,type,vol){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type||'square';o.frequency.value=freq;g.gain.value=vol||.08;g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur)}catch(e){}}
-function sfxCorrect(){beep(523,.1);setTimeout(()=>beep(784,.15),100)}
-function sfxWrong(){beep(200,.2,'sawtooth',.1)}
-function sfxCombo(){beep(784,.08);setTimeout(()=>beep(988,.08),80);setTimeout(()=>beep(1175,.12),160)}
-function sfxLevelUp(){beep(523,.1);setTimeout(()=>beep(659,.1),120);setTimeout(()=>beep(784,.1),240);setTimeout(()=>beep(1047,.25),360)}
-function spawnParticles(x,y,emoji,count){const c=document.getElementById('particles');for(let i=0;i<(count||8);i++){const p=document.createElement('span');p.className='particle';p.textContent=emoji;p.style.left=(x+Math.random()*60-30)+'px';p.style.top=(y+Math.random()*20-10)+'px';p.style.animationDuration=(.5+Math.random()*.6)+'s';c.appendChild(p);setTimeout(()=>p.remove(),900)}}
-function renderHome(){const lv=getLevel(state.xp);document.getElementById('avatar-icon').textContent=lv.icon;document.getElementById('char-name').textContent=lv.title;document.getElementById('char-title').textContent='Lv.'+lv.lv+' · '+lv.desc;const nxt=xpToNext(lv.lv),cur=state.xp-lv.xp;document.getElementById('xp-bar').style.width=(cur/nxt*100)+'%';document.getElementById('xp-text').textContent=cur+' / '+nxt+' XP';document.getElementById('stat-streak').textContent=state.streak;document.getElementById('stat-total').textContent=state.xp;document.getElementById('stat-best').textContent=state.bestCombo}
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
-function goHome(){showScreen('start-screen');renderHome()}
-function startBattle(){const lv=getLevel(state.xp);const topic=lv.topic||'sentence-basic';let pool=BANKS[topic];if(!pool)pool=BANKS['sentence-basic'];const selected=shuffle(pool).slice(0,8);battle={questions:selected,currentIdx:0,hp:3,combo:0,maxCombo:0,correct:0,roundXP:0};showScreen('battle-screen');renderHearts();updateComboBadge();updateQuestionCounter();showQuestion()}
-function renderHearts(){const h=document.getElementById('hearts');let html='';for(let i=0;i<3;i++)html+='<span class="heart'+(i>=battle.hp?' lost':'')+'">❤️</span>';h.innerHTML=html}
-function updateComboBadge(){const b=document.getElementById('combo-badge');if(battle.combo>=2){b.textContent='🔥 x'+battle.combo;b.classList.add('active')}else{b.classList.remove('active')}}
-function updateQuestionCounter(){const c=document.getElementById('question-counter');let dots='';for(let i=0;i<battle.questions.length;i++){const cls=i<battle.currentIdx?'done':(i===battle.currentIdx?'current':'');dots+='<span class="dot '+cls+'"></span>'}c.innerHTML='第 '+(battle.currentIdx+1)+' / '+battle.questions.length+' 题  '+dots}
-function showQuestion(){if(battle.currentIdx>=battle.questions.length||battle.hp<=0){endBattle();return}const q=battle.questions[battle.currentIdx];document.getElementById('question-text').textContent=q.q;document.getElementById('feedback').textContent='';document.getElementById('feedback').className='feedback-text';const opts=document.getElementById('options');opts.innerHTML='';q.opts.forEach((o,i)=>{const btn=document.createElement('button');btn.className='option-btn';btn.textContent=o;btn.onclick=()=>answerQuestion(i);opts.appendChild(btn)});updateQuestionCounter()}
-function answerQuestion(idx){const q=battle.questions[battle.currentIdx];const correct=idx===q.ans;const btns=document.querySelectorAll('#options .option-btn');btns.forEach((b,i)=>{b.disabled=true;if(i===q.ans)b.classList.add('correct')});if(!correct)btns[idx].classList.add('wrong');const fb=document.getElementById('feedback');if(correct){battle.correct++;battle.combo++;if(battle.combo>battle.maxCombo)battle.maxCombo=battle.combo;const baseXP=10;const comboBonus=Math.floor(battle.combo/3)*5;const earned=baseXP+comboBonus;battle.roundXP+=earned;sfxCorrect();if(battle.combo>=3){sfxCombo();spawnParticles(window.innerWidth/2,window.innerHeight/2,battle.combo>=5?'🔥':'✨')}fb.textContent=battle.combo>=3?'🔥 '+battle.combo+'连击！+'+earned+'XP':'✅ 正确！+'+earned+'XP';fb.className='feedback-text good'}else{battle.hp--;battle.combo=0;sfxWrong();fb.innerHTML='❌ 答案是 <b>'+q.opts[q.ans]+'</b><br><small style="color:var(--muted)">'+q.hint+'</small>';fb.className='feedback-text bad';spawnParticles(window.innerWidth/2,window.innerHeight/2,'💔',3)}renderHearts();updateComboBadge();updateQuestionCounter();setTimeout(()=>{battle.currentIdx++;showQuestion()},correct?800:1800)}
-function endBattle(){state.totalQuestions+=battle.questions.length;state.totalCorrect+=battle.correct;state.xp+=battle.roundXP;if(battle.maxCombo>state.bestCombo)state.bestCombo=battle.maxCombo;const oldLv=state.lv;const newLv=getLevel(state.xp);state.lv=newLv.lv;const today=new Date().toDateString();if(state.lastPlayDate){const yesterday=new Date(Date.now()-86400000).toDateString();if(state.lastPlayDate===yesterday)state.streak++;else if(state.lastPlayDate!==today)state.streak=1}else state.streak=1;state.lastPlayDate=today;saveState(state);showScreen('result-screen');const perfect=battle.correct===battle.questions.length;const good=battle.correct>=battle.questions.length*0.7;document.getElementById('result-icon').textContent=perfect?'👑':good?'✨':'💪';document.getElementById('result-title').textContent=perfect?'完美通关！':good?'表现不错！':'继续加油！';document.getElementById('res-correct').textContent=battle.correct+'/'+battle.questions.length;document.getElementById('res-combo').textContent=battle.maxCombo;document.getElementById('res-hp').textContent=battle.hp;document.getElementById('xp-gain').textContent='+'+battle.roundXP+' XP';const lvlMsg=document.getElementById('level-up-msg');if(newLv.lv>oldLv){sfxLevelUp();lvlMsg.innerHTML='<div style="color:var(--gold);font-weight:900;font-size:1.1rem;margin-top:8px">🎉 升级！'+newLv.icon+' '+newLv.title+'</div>';spawnParticles(window.innerWidth/2,window.innerHeight/2,'🎉',15);setTimeout(()=>{document.getElementById('level-title').textContent='晋升 '+newLv.title+'！';document.getElementById('level-desc').textContent='新称号解锁：'+newLv.desc+'\n总分 '+state.xp+' XP';document.getElementById('level-modal').style.display='flex'},400)}else{lvlMsg.innerHTML=''}}
+let forcedTopic=null; // if user picked a topic manually
+
+// ==================== HELPERS ====================
+function gl(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].xp)return LEVELS[i];return LEVELS[0]}
+function xn(lv){return (LEVELS.find(l=>l.lv===lv+1)||{}).xp||9999}
+function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+
+// ==================== AUDIO ====================
+let ac=null;
+function bp(f,d,t,v){
+  try{
+    if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.type=t||'square';o.frequency.value=f;g.gain.value=v||.08;
+    g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);
+    o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d);
+  }catch(e){}
+}
+function sfxOK(){bp(523,.1);setTimeout(()=>bp(784,.15),100)}
+function sfxNO(){bp(200,.2,'sawtooth',.1)}
+function sfxCB(){bp(784,.08);setTimeout(()=>bp(988,.08),80);setTimeout(()=>bp(1175,.12),160)}
+function sfxLV(){bp(523,.1);setTimeout(()=>bp(659,.1),120);setTimeout(()=>bp(784,.1),240);setTimeout(()=>bp(1047,.25),360)}
+
+// ==================== PARTICLES ====================
+function sp(x,y,e,n){
+  const c=document.getElementById('particles');
+  for(let i=0;i<(n||8);i++){
+    const p=document.createElement('span');p.className='particle';p.textContent=e;
+    p.style.left=(x+Math.random()*60-30)+'px';p.style.top=(y+Math.random()*20-10)+'px';
+    p.style.animationDuration=(.5+Math.random()*.6)+'s';c.appendChild(p);
+    setTimeout(()=>p.remove(),900);
+  }
+}
+
+// ==================== SCREENS ====================
+function ssr(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function goHome(){forcedTopic=null;ssr('home-screen');renderHome()}
+function renderHome(){
+  const lv=gl(state.xp);
+  document.getElementById('avatar-icon').textContent=lv.icon;
+  document.getElementById('char-name').textContent=lv.title;
+  document.getElementById('char-title').textContent=`Lv.${lv.lv} · ${lv.desc}`;
+  const nxt=xn(lv.lv),cur=state.xp-lv.xp;
+  document.getElementById('xp-bar').style.width=(cur/nxt*100)+'%';
+  document.getElementById('xp-text').textContent=`${cur} / ${nxt} XP`;
+  document.getElementById('stat-streak').textContent=state.streak;
+  document.getElementById('stat-total').textContent=state.xp;
+  document.getElementById('stat-best').textContent=state.bestCombo;
+  // Render topic grid
+  const topics=[
+    {id:'sentence-basic',e:'📐',t:'五大句型',d:'60题·Lv.1-3'},
+    {id:'clause-markers',e:'🔗',t:'从句标记',d:'25题·Lv.2-4'},
+    {id:'sentence-mixed',e:'🔪',t:'拆句实战',d:'25题·Lv.3-6'},
+    {id:'vocab-1',e:'📝',t:'词汇01',d:'词1-30'},
+    {id:'vocab-2',e:'📝',t:'词汇02',d:'词31-60'},
+    {id:'vocab-3',e:'📝',t:'词汇03',d:'词61-90'},
+    {id:'vocab-4',e:'📝',t:'词汇04',d:'词91-120'},
+    {id:'reading',e:'📖',t:'阅读态度',d:'20题·Lv.5+'},
+    {id:'cloze',e:'🧩',t:'完形搭配',d:'20题·Lv.6+'},
+    {id:'translation',e:'🌐',t:'翻译难点',d:'15题·Lv.7+'},
+    {id:'exam-real',e:'📄',t:'历年真题',d:'30题·2015-2025'},
+  ];
+  const g=document.getElementById('topic-grid');
+  g.innerHTML=topics.map(t=>`<div class="topic-chip" onclick="startBattle('${t.id}')"><span class="emoji">${t.e}</span>${t.t}<br><small style="color:var(--muted)">${t.d}</small></div>`).join('');
+}
+
+// ==================== LEARN MODE ====================
+function startLearn(){
+  const lv=gl(state.xp);
+  document.getElementById('learn-label').textContent=`Lv.${lv.lv} · ${lv.title}`;
+  // Build multi-dimensional learn content
+  const banks=(lv.banks||[]).map(b=>b.b);
+  let html='';
+  // Show primary content based on first bank
+  const primary=banks[0]||'sentence-basic';
+  if(LESSONS[primary]) html+=LESSONS[primary];
+  // Append vocab preview for vocab banks in this level
+  banks.forEach(b=>{
+    if((b.startsWith('vocab-')||b==='reading')&&LESSONS[b]&&!html.includes(LESSONS[b].substring(0,50))){
+      html+='<hr style="border-color:#2d2d4a;margin:16px 0">'+LESSONS[b];
+    }
+  });
+  if(!html) html=LESSONS['default'];
+  document.getElementById('learn-content').innerHTML=html;
+  ssr('learn-screen');
+  document.getElementById('learn-content').scrollTop=0;
+}
+
+// ==================== BATTLE ====================
+function startBattle(topicOverride){
+  let pool=[];
+  if(topicOverride){
+    // Manual topic pick — single bank
+    pool=BANKS[topicOverride]||[];
+  }else{
+    // Level-based multi-bank mixing
+    const lv=gl(state.xp);
+    const banks=lv.banks||[{b:'sentence-basic',w:5}];
+    // Build weighted pool
+    banks.forEach(({b,w})=>{
+      const qs=BANKS[b]||[];
+      const take=Math.min(qs.length,Math.ceil(w*2)); // weight determines how many to sample
+      pool=pool.concat(sh(qs).slice(0,take));
+    });
+  }
+  if(!pool||pool.length===0) pool=BANKS['sentence-basic']||[];
+
+  const n=Math.min(10,pool.length);
+  const selected=sh(pool).slice(0,n);
+  battle={questions:selected,idx:0,hp:3,combo:0,mc:0,cor:0,rxp:0};
+  forcedTopic=topicOverride||null;
+  ssr('battle-screen');
+  rH();uCB();uQC();sQ();
+}
+
+function rH(){
+  const h=document.getElementById('hearts');
+  h.innerHTML=[0,1,2].map(i=>`<span class="heart${i>=battle.hp?' lost':''}">❤️</span>`).join('');
+}
+function uCB(){
+  const b=document.getElementById('combo-badge');
+  if(battle.combo>=2){b.textContent=`🔥 x${battle.combo}`;b.classList.add('active')}
+  else b.classList.remove('active');
+}
+function uQC(){
+  let d='';
+  for(let i=0;i<battle.questions.length;i++){
+    d+=`<span class="dot ${i<battle.idx?'done':(i===battle.idx?'current':'')}"></span>`;
+  }
+  document.getElementById('question-counter').innerHTML=`${battle.idx+1}/${battle.questions.length} ${d}`;
+}
+function sQ(){
+  if(battle.idx>=battle.questions.length||battle.hp<=0){eB();return}
+  const q=battle.questions[battle.idx];
+  document.getElementById('question-text').textContent=q.q;
+  document.getElementById('feedback').textContent='';
+  document.getElementById('feedback').className='feedback-text';
+  const o=document.getElementById('options');o.innerHTML='';
+  q.o.forEach((t,i)=>{
+    const b=document.createElement('button');b.className='option-btn';
+    b.textContent=t;b.onclick=()=>aQ(i);o.appendChild(b);
+  });
+  uQC();
+}
+function aQ(idx){
+  const q=battle.questions[battle.idx];
+  const ok=idx===q.a;
+  const btns=document.querySelectorAll('#options .option-btn');
+  btns.forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add('correct')});
+  if(!ok)btns[idx].classList.add('wrong');
+  const fb=document.getElementById('feedback');
+  if(ok){
+    battle.cor++;battle.combo++;
+    if(battle.combo>battle.mc)battle.mc=battle.combo;
+    const base=10+Math.floor(Math.random()*3); // 10-12 XP base
+    const cb=Math.floor(battle.combo/3)*5;
+    const e=base+cb;battle.rxp+=e;
+    sfxOK();if(battle.combo>=3){sfxCB();sp(window.innerWidth/2,window.innerHeight/2,battle.combo>=5?'🔥':'✨')}
+    fb.textContent=battle.combo>=3?`🔥 ${battle.combo}连击！+${e}XP`:`✅ 正确！+${e}XP`;
+    fb.className='feedback-text good';
+  }else{
+    battle.hp--;battle.combo=0;sfxNO();
+    fb.innerHTML=`❌ 答案是 <b>${q.o[q.a]}</b><br><small style="color:var(--muted)">${q.h}</small>`;
+    fb.className='feedback-text bad';sp(window.innerWidth/2,window.innerHeight/2,'💔',3);
+  }
+  rH();uCB();uQC();
+  setTimeout(()=>{battle.idx++;sQ()},ok?700:1800);
+}
+function eB(){
+  state.totalQ+=battle.questions.length;state.totalC+=battle.cor;
+  state.xp+=battle.rxp;if(battle.mc>state.bestCombo)state.bestCombo=battle.mc;
+  const ol=state.lv;const nl=gl(state.xp);state.lv=nl.lv;
+  const today=new Date().toDateString();
+  if(state.lastPlayDate){
+    const y=new Date(Date.now()-86400000).toDateString();
+    if(state.lastPlayDate===y)state.streak++;else if(state.lastPlayDate!==today)state.streak=1;
+  }else state.streak=1;
+  state.lastPlayDate=today;ss(state);
+  ssr('result-screen');
+  const p=battle.cor===battle.questions.length;
+  const g=battle.cor>=battle.questions.length*0.7;
+  document.getElementById('result-icon').textContent=p?'👑':g?'✨':'💪';
+  document.getElementById('result-title').textContent=p?'完美通关！':g?'表现不错！':'继续加油！';
+  document.getElementById('res-correct').textContent=battle.cor+'/'+battle.questions.length;
+  document.getElementById('res-combo').textContent=battle.mc;
+  document.getElementById('res-hp').textContent=battle.hp;
+  document.getElementById('xp-gain').textContent=`+${battle.rxp} XP`;
+  const m=document.getElementById('level-up-msg');
+  if(nl.lv>ol){
+    sfxLV();m.innerHTML=`<div style="color:var(--gold);font-weight:900;font-size:1.1rem;margin-top:8px">🎉 升级！${nl.icon} ${nl.title}</div>`;
+    sp(window.innerWidth/2,window.innerHeight/2,'🎉',15);
+    setTimeout(()=>{
+      document.getElementById('level-title').textContent=`晋升 ${nl.title}！`;
+      document.getElementById('level-desc').textContent=`新称号：${nl.desc}\n总分 ${state.xp} XP`;
+      document.getElementById('level-modal').style.display='flex';
+    },400);
+  }else{m.innerHTML=''}
+}
 function closeLevelModal(){document.getElementById('level-modal').style.display='none'}
-function resetGame(){if(confirm('确定要重置所有存档吗？等级、XP、签到记录都将清零。')){state={...DEFAULT_STATE};saveState(state);goHome()}}
+function confirmQuit(){if(confirm('确定要逃跑吗？本轮进度将丢失。'))goHome()}
+function resetGame(){if(confirm('确定要重置所有存档吗？')){state=JSON.parse(JSON.stringify(D));ss(state);goHome()}}
+
+// ==================== INIT ====================
 renderHome();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>
