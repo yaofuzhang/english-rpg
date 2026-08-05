@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0a">
+<title>英语征途 · Degree English RPG</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a0a;--card:#1a1a2e;--gold:#f0c040;--xp:#4ade80;--hp:#f87171;--combo:#f59e0b;--text:#e2e8f0;--muted:#94a3b8;--accent:#6366f1;--success:#22c55e;--danger:#ef4444;--warn:#f59e0b}
+body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.screen{display:none;flex-direction:column;align-items:center;padding:20px 16px;min-height:100dvh}
+.screen.active{display:flex}
+#start-screen{justify-content:center;gap:24px}
+.game-title{font-size:2.4rem;font-weight:900;background:linear-gradient(135deg,var(--gold),#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+.game-subtitle{color:var(--muted);font-size:.95rem;text-align:center}
+.character-card{background:var(--card);border-radius:20px;padding:24px;width:100%;max-width:340px;display:flex;align-items:center;gap:16px;border:2px solid #2d2d4a}
+.avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:2rem}
+.char-info{flex:1}
+.char-name{font-weight:700;font-size:1.1rem}
+.char-title{color:var(--muted);font-size:.8rem;margin-top:2px}
+.xp-bar-wrap{height:6px;background:#2d2d4a;border-radius:3px;margin-top:6px;overflow:hidden}
+.xp-bar-fill{height:100%;background:var(--xp);border-radius:3px;transition:width .5s}
+.xp-text{font-size:.7rem;color:var(--muted);margin-top:2px}
+.stats-row{display:flex;gap:16px;width:100%;max-width:340px}
+.stat-box{flex:1;background:var(--card);border-radius:14px;padding:14px;text-align:center;border:2px solid #2d2d4a}
+.stat-val{font-size:1.6rem;font-weight:900}
+.stat-val.gold{color:var(--gold)}.stat-val.fire{color:var(--combo)}.stat-val.ice{color:#60a5fa}
+.stat-label{color:var(--muted);font-size:.7rem;margin-top:2px}
+.btn{border:none;border-radius:14px;padding:16px 40px;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .15s;width:100%;max-width:340px;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;box-shadow:0 4px 20px rgba(99,102,241,.4)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#f59e0b);color:#0a0a0a;box-shadow:0 4px 20px rgba(240,192,64,.3)}
+.btn-small{padding:10px 20px;font-size:.9rem;max-width:200px}
+.btn-row{display:flex;gap:12px;width:100%;max-width:340px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px)}
+.modal{background:var(--card);border-radius:20px;padding:30px 24px;text-align:center;max-width:320px;width:90%;border:2px solid #2d2d4a}
+.modal h2{font-size:1.5rem;margin-bottom:8px}
+.modal p{color:var(--muted);margin-bottom:16px;font-size:.9rem}
+#battle-screen{gap:16px}
+.battle-header{display:flex;align-items:center;gap:12px;width:100%;max-width:400px}
+.hearts{display:flex;gap:4px;font-size:1.4rem}
+.heart{transition:transform .3s,opacity .3s}
+.heart.lost{opacity:.2;transform:scale(.8)}
+.combo-badge{margin-left:auto;background:var(--combo);color:#0a0a0a;font-weight:900;padding:4px 10px;border-radius:20px;font-size:.8rem;opacity:0;transition:opacity .3s}
+.combo-badge.active{opacity:1}
+.question-counter{color:var(--muted);font-size:.8rem;width:100%;max-width:400px}
+.dot{width:8px;height:8px;border-radius:50%;background:#2d2d4a;transition:background .3s;display:inline-block;margin:0 2px}
+.dot.done{background:var(--success)}.dot.wrong{background:var(--danger)}.dot.current{background:var(--accent);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.question-box{background:var(--card);border-radius:20px;padding:28px 20px;width:100%;max-width:400px;text-align:center;border:2px solid #2d2d4a;min-height:100px;display:flex;align-items:center;justify-content:center}
+.question-text{font-size:1.3rem;font-weight:700;line-height:1.6}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:400px}
+.option-btn{background:var(--card);border:2px solid #2d2d4a;border-radius:14px;padding:16px;font-size:1rem;color:var(--text);cursor:pointer;transition:all .15s;text-align:center;font-weight:600}
+.option-btn:active{transform:scale(.96)}
+.option-btn.correct{background:var(--success);border-color:var(--success);color:#fff;animation:popIn .3s}
+.option-btn.wrong{background:var(--danger);border-color:var(--danger);color:#fff;animation:shake .4s}
+.option-btn:disabled{pointer-events:none;opacity:.6}
+.option-btn:disabled.correct,.option-btn:disabled.wrong{opacity:1}
+@keyframes popIn{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.feedback-text{font-size:1.2rem;font-weight:900;text-align:center;min-height:30px}
+.feedback-text.good{color:var(--success)}.feedback-text.bad{color:var(--danger)}
+#result-screen{gap:20px;justify-content:center}
+.result-icon{font-size:4rem}
+.result-title{font-size:1.6rem;font-weight:900;text-align:center}
+.result-stats{display:flex;gap:12px;width:100%;max-width:340px}
+.result-stat{flex:1;background:var(--card);border-radius:14px;padding:16px;text-align:center;border:2px solid #2d2d4a}
+.result-stat .val{font-size:1.4rem;font-weight:900}
+.result-stat .lbl{color:var(--muted);font-size:.7rem;margin-top:2px}
+.xp-gain{color:var(--xp);font-weight:900;font-size:1.2rem;text-align:center}
+#particles{position:fixed;inset:0;pointer-events:none;z-index:200}
+.particle{position:absolute;font-size:1.4rem;animation:particleUp .8s ease-out forwards}
+@keyframes particleUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(.5) rotate(20deg)}}
+@media(max-width:360px){.game-title{font-size:1.8rem}.question-text{font-size:1.1rem}.option-btn{font-size:.85rem;padding:14px 10px}.options-grid{gap:8px}}
+</style>
+</head>
+<body>
+
+<div id="start-screen" class="screen active">
+  <div class="game-title">⚔️ 英语征途</div>
+  <div class="game-subtitle">同等学力申硕 · RPG 训练营</div>
+  <div class="character-card">
+    <div class="avatar" id="avatar-icon">📖</div>
+    <div class="char-info">
+      <div class="char-name" id="char-name">英语难民</div>
+      <div class="char-title" id="char-title">Lv.1 · 五大句型尚未征服</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar" style="width:0%"></div></div>
+      <div class="xp-text" id="xp-text">0 / 100 XP</div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-val fire" id="stat-streak">0</div><div class="stat-label">🔥 连续签到</div></div>
+    <div class="stat-box"><div class="stat-val gold" id="stat-total">0</div><div class="stat-label">⭐ 累计 XP</div></div>
+    <div class="stat-box"><div class="stat-val ice" id="stat-best">0</div><div class="stat-label">💎 最高连击</div></div>
+  </div>
+  <button class="btn btn-primary" onclick="startBattle()">⚡ 开始今日修炼</button>
+  <button class="btn btn-small" onclick="resetGame()" style="background:transparent;color:var(--muted);border:1px solid #2d2d4a">🔄 重置存档</button>
+</div>
+
+<div id="battle-screen" class="screen">
+  <div class="battle-header">
+    <div class="hearts" id="hearts"></div>
+    <div class="combo-badge" id="combo-badge">🔥 x1</div>
+  </div>
+  <div class="question-counter" id="question-counter"></div>
+  <div class="question-box"><div class="question-text" id="question-text"></div></div>
+  <div class="feedback-text" id="feedback"></div>
+  <div class="options-grid" id="options"></div>
+</div>
+
+<div id="result-screen" class="screen">
+  <div class="result-icon" id="result-icon"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-stats">
+    <div class="result-stat"><div class="val" id="res-correct">0</div><div class="lbl">✅ 正确</div></div>
+    <div class="result-stat"><div class="val" id="res-combo">0</div><div class="lbl">🔥 最高连击</div></div>
+    <div class="result-stat"><div class="val" id="res-hp">3</div><div class="lbl">❤️ 剩余血量</div></div>
+  </div>
+  <div class="xp-gain" id="xp-gain"></div>
+  <div id="level-up-msg"></div>
+  <button class="btn btn-primary" onclick="startBattle()">🔁 再来一局</button>
+  <button class="btn btn-small" onclick="goHome()" style="background:transparent;color:var(--muted);border:1px solid #2d2d4a">🏠 回城</button>
+</div>
+
+<div id="particles"></div>
+
+<div id="level-modal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <div style="font-size:3rem">🎉</div>
+    <h2 id="level-title">升级！</h2>
+    <p id="level-desc"></p>
+    <button class="btn btn-gold" onclick="closeLevelModal()">太棒了！</button>
+  </div>
+</div>
+
+<script>
+const LEVELS=[{lv:1,title:'英语难民',xp:0,icon:'📖',desc:'五大句型尚未征服',topic:'sentence-basic'},{lv:2,title:'语法学徒',xp:100,icon:'📚',desc:'从句标记已入门',topic:'sentence-basic'},{lv:3,title:'拆句新手',xp:250,icon:'🔍',desc:'能拆解简单长难句',topic:'sentence-mixed'},{lv:4,title:'词汇猎人',xp:450,icon:'🎯',desc:'认识300+高频词',topic:'vocab-1'},{lv:5,title:'阅读侦察兵',xp:700,icon:'🕵️',desc:'阅读理解正确率>50%',topic:'vocab-2'},{lv:6,title:'完形战士',xp:1000,icon:'🛡️',desc:'完形填空稳定6+分',topic:'cloze'},{lv:7,title:'翻译法师',xp:1400,icon:'🧙',desc:'英译汉拿到7+分',topic:'translation'},{lv:8,title:'写作骑士',xp:1900,icon:'⚔️',desc:'模板默写肌肉记忆',topic:'writing'},{lv:9,title:'全题型大师',xp:2500,icon:'👑',desc:'各题型均60%+正确率',topic:'mixed'},{lv:10,title:'及格勇士',xp:3200,icon:'🏆',desc:'模考稳定60+分',topic:'mixed'}];
+const BANKS={'sentence-basic':[{q:'The baby smiled.',opts:['SV','SVO','SVC','SVOO'],ans:0,hint:'smiled 后面什么也没有，动词意思已经完整'},{q:'She cooked dinner.',opts:['SV','SVO','SVC','SVOO'],ans:1,hint:'cooked + dinner → 动作 + 承受者'},{q:'He is a doctor.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'doctor 说的是"他是谁"，不是他做了什么'},{q:'I bought her a gift.',opts:['SVO','SVC','SVOO','SVOC'],ans:2,hint:'her 和 gift 是两个不同的东西'},{q:'She made me happy.',opts:['SVO','SVC','SVOO','SVOC'],ans:3,hint:'happy 说的是 me 的状态'},{q:'The sun rises.',opts:['SV','SVO','SVC','SVOO'],ans:0,hint:'rises 后面不接宾语，意思完整'},{q:'They elected him president.',opts:['SVO','SVC','SVOO','SVOC'],ans:3,hint:'president 说的是 him 的身份'},{q:'The food tastes good.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'tastes 是系动词，good 说的是 food'},{q:'He told her a story.',opts:['SVO','SVC','SVOO','SVOC'],ans:2,hint:'her 和 story 指不同东西'},{q:'She looks tired.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'looks 是系动词，tired 说的是 she'},{q:'Birds fly south in winter.',opts:['SV','SVO','SVC','SVOO'],ans:0,hint:'south in winter 是状语（可删除），骨架就是 Birds fly'},{q:'I found the movie boring.',opts:['SVO','SVC','SVOO','SVOC'],ans:3,hint:'boring 说的是 movie 的状态'}],'sentence-mixed':[{q:'The cake she baked was delicious.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'was delicious 说的是 cake，中间 she baked 是定语从句'},{q:'He gave his daughter a new phone.',opts:['SVO','SVC','SVOO','SVOC'],ans:2,hint:'his daughter 和 a new phone 是两个不同实体'},{q:'The news made everyone relieved.',opts:['SVO','SVC','SVOO','SVOC'],ans:3,hint:'relieved 说的是 everyone 的状态'},{q:'What she said surprised me.',opts:['SV','SVO','SVC','SVOO'],ans:1,hint:'surprised + me → 动作+承受者。What she said 是整个主语从句'},{q:'The door remained closed.',opts:['SV','SVO','SVC','SVOO'],ans:2,hint:'remained 是系动词，closed 说的是 door'}],'vocab-1':[{q:'abandon',opts:['放弃','获得','影响','评估'],ans:0,hint:'a + bandon(板凳) → 冷板凳 → 被放弃'},{q:'access',opts:['评估','进入','放弃','适应'],ans:1,hint:'ac + cess(走) → 走过去 → 进入/获取'},{q:'accurate',opts:['丰富的','抽象的','准确的','足够的'],ans:2,hint:'ac + cur(关心) + ate → 用心做的 → 精准的'},{q:'achieve',opts:['放弃','影响','适应','达到'],ans:3,hint:'a + chieve(首领) → 成为首领 → 达成目标'},{q:'acquire',opts:['放弃','获得','影响','评估'],ans:1,hint:'ac + quire(寻求) → 寻求到 → 获得'},{q:'adequate',opts:['抽象的','放弃的','足够的','影响的'],ans:2,hint:'ad + equ(平等) + ate → 与需求平等的 → 足够的'},{q:'affect',opts:['放弃','影响','获得','评估'],ans:1,hint:'af + fect(做) → 对...起作用 → 影响'},{q:'abundant',opts:['放弃的','抽象的','准确的','丰富的'],ans:3,hint:'a(无)+bund(边界)+ant → 无边界的 → 丰富的'},{q:'annual',opts:['放弃的','每年的','影响的','足够的'],ans:1,hint:'ann(年)+ual → 每年的'},{q:'apparent',opts:['足够的','放弃的','明显的','获得的'],ans:2,hint:'ap+par(出现)+ent → 出现了→明显的'}],'vocab-2':[{q:'approach',opts:['方法；接近','放弃','评估','影响'],ans:0,hint:'ap+proach(近)→靠近→方法/接近'},{q:'assess',opts:['放弃','评估','获得','影响'],ans:1,hint:'as+sess(坐)→坐下来仔细看→评估'},{q:'artificial',opts:['放弃的','足够的','人工的','每年的'],ans:2,hint:'arti(技艺)+fic(做)+ial → 人工做的'},{q:'assume',opts:['放弃','影响','获得','假设'],ans:3,hint:'as+sume(拿)→先拿一个想法→假设'},{q:'argue',opts:['放弃','争论/主张','获得','评估'],ans:1,hint:'阅读态度题必背词——作者argue=主张'},{q:'alternative',opts:['丰富的','替代方案','准确的','放弃的'],ans:1,hint:'alter(改变)+ive→可以改变的→备选方案'},{q:'analyze',opts:['放弃','影响','分析','获得'],ans:2,hint:'ana(分开)+lyze(解开)→分开解开→分析'},{q:'appropriate',opts:['放弃的','适当的','足够的','获得的'],ans:1,hint:'ap+propri(自己的)+ate→适合自己的'},{q:'anxiety',opts:['放弃的','焦虑','足够的','获得的'],ans:1,hint:'anxious的名词→焦虑'},{q:'aggressive',opts:['丰富的','放弃的','侵略的/积极的','足够的'],ans:2,hint:'ag+gress(走)+ive→向前冲的→积极的/侵略的'}]};
+const DEFAULT_STATE={xp:0,lv:1,streak:0,lastPlayDate:'',bestCombo:0,totalQuestions:0,totalCorrect:0};
+function loadState(){try{return JSON.parse(localStorage.getItem('english-rpg-state'))||{...DEFAULT_STATE}}catch(e){return{...DEFAULT_STATE}}}
+function saveState(s){localStorage.setItem('english-rpg-state',JSON.stringify(s))}
+let state=loadState();
+let battle=null;
+function getLevel(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].xp)return LEVELS[i];return LEVELS[0]}
+function xpToNext(lv){return LEVELS.find(l=>l.lv===lv+1)?.xp||9999}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+let audioCtx=null;
+function beep(freq,dur,type,vol){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type||'square';o.frequency.value=freq;g.gain.value=vol||.08;g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur)}catch(e){}}
+function sfxCorrect(){beep(523,.1);setTimeout(()=>beep(784,.15),100)}
+function sfxWrong(){beep(200,.2,'sawtooth',.1)}
+function sfxCombo(){beep(784,.08);setTimeout(()=>beep(988,.08),80);setTimeout(()=>beep(1175,.12),160)}
+function sfxLevelUp(){beep(523,.1);setTimeout(()=>beep(659,.1),120);setTimeout(()=>beep(784,.1),240);setTimeout(()=>beep(1047,.25),360)}
+function spawnParticles(x,y,emoji,count){const c=document.getElementById('particles');for(let i=0;i<(count||8);i++){const p=document.createElement('span');p.className='particle';p.textContent=emoji;p.style.left=(x+Math.random()*60-30)+'px';p.style.top=(y+Math.random()*20-10)+'px';p.style.animationDuration=(.5+Math.random()*.6)+'s';c.appendChild(p);setTimeout(()=>p.remove(),900)}}
+function renderHome(){const lv=getLevel(state.xp);document.getElementById('avatar-icon').textContent=lv.icon;document.getElementById('char-name').textContent=lv.title;document.getElementById('char-title').textContent='Lv.'+lv.lv+' · '+lv.desc;const nxt=xpToNext(lv.lv),cur=state.xp-lv.xp;document.getElementById('xp-bar').style.width=(cur/nxt*100)+'%';document.getElementById('xp-text').textContent=cur+' / '+nxt+' XP';document.getElementById('stat-streak').textContent=state.streak;document.getElementById('stat-total').textContent=state.xp;document.getElementById('stat-best').textContent=state.bestCombo}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function goHome(){showScreen('start-screen');renderHome()}
+function startBattle(){const lv=getLevel(state.xp);const topic=lv.topic||'sentence-basic';let pool=BANKS[topic];if(!pool)pool=BANKS['sentence-basic'];const selected=shuffle(pool).slice(0,8);battle={questions:selected,currentIdx:0,hp:3,combo:0,maxCombo:0,correct:0,roundXP:0};showScreen('battle-screen');renderHearts();updateComboBadge();updateQuestionCounter();showQuestion()}
+function renderHearts(){const h=document.getElementById('hearts');let html='';for(let i=0;i<3;i++)html+='<span class="heart'+(i>=battle.hp?' lost':'')+'">❤️</span>';h.innerHTML=html}
+function updateComboBadge(){const b=document.getElementById('combo-badge');if(battle.combo>=2){b.textContent='🔥 x'+battle.combo;b.classList.add('active')}else{b.classList.remove('active')}}
+function updateQuestionCounter(){const c=document.getElementById('question-counter');let dots='';for(let i=0;i<battle.questions.length;i++){const cls=i<battle.currentIdx?'done':(i===battle.currentIdx?'current':'');dots+='<span class="dot '+cls+'"></span>'}c.innerHTML='第 '+(battle.currentIdx+1)+' / '+battle.questions.length+' 题  '+dots}
+function showQuestion(){if(battle.currentIdx>=battle.questions.length||battle.hp<=0){endBattle();return}const q=battle.questions[battle.currentIdx];document.getElementById('question-text').textContent=q.q;document.getElementById('feedback').textContent='';document.getElementById('feedback').className='feedback-text';const opts=document.getElementById('options');opts.innerHTML='';q.opts.forEach((o,i)=>{const btn=document.createElement('button');btn.className='option-btn';btn.textContent=o;btn.onclick=()=>answerQuestion(i);opts.appendChild(btn)});updateQuestionCounter()}
+function answerQuestion(idx){const q=battle.questions[battle.currentIdx];const correct=idx===q.ans;const btns=document.querySelectorAll('#options .option-btn');btns.forEach((b,i)=>{b.disabled=true;if(i===q.ans)b.classList.add('correct')});if(!correct)btns[idx].classList.add('wrong');const fb=document.getElementById('feedback');if(correct){battle.correct++;battle.combo++;if(battle.combo>battle.maxCombo)battle.maxCombo=battle.combo;const baseXP=10;const comboBonus=Math.floor(battle.combo/3)*5;const earned=baseXP+comboBonus;battle.roundXP+=earned;sfxCorrect();if(battle.combo>=3){sfxCombo();spawnParticles(window.innerWidth/2,window.innerHeight/2,battle.combo>=5?'🔥':'✨')}fb.textContent=battle.combo>=3?'🔥 '+battle.combo+'连击！+'+earned+'XP':'✅ 正确！+'+earned+'XP';fb.className='feedback-text good'}else{battle.hp--;battle.combo=0;sfxWrong();fb.innerHTML='❌ 答案是 <b>'+q.opts[q.ans]+'</b><br><small style="color:var(--muted)">'+q.hint+'</small>';fb.className='feedback-text bad';spawnParticles(window.innerWidth/2,window.innerHeight/2,'💔',3)}renderHearts();updateComboBadge();updateQuestionCounter();setTimeout(()=>{battle.currentIdx++;showQuestion()},correct?800:1800)}
+function endBattle(){state.totalQuestions+=battle.questions.length;state.totalCorrect+=battle.correct;state.xp+=battle.roundXP;if(battle.maxCombo>state.bestCombo)state.bestCombo=battle.maxCombo;const oldLv=state.lv;const newLv=getLevel(state.xp);state.lv=newLv.lv;const today=new Date().toDateString();if(state.lastPlayDate){const yesterday=new Date(Date.now()-86400000).toDateString();if(state.lastPlayDate===yesterday)state.streak++;else if(state.lastPlayDate!==today)state.streak=1}else state.streak=1;state.lastPlayDate=today;saveState(state);showScreen('result-screen');const perfect=battle.correct===battle.questions.length;const good=battle.correct>=battle.questions.length*0.7;document.getElementById('result-icon').textContent=perfect?'👑':good?'✨':'💪';document.getElementById('result-title').textContent=perfect?'完美通关！':good?'表现不错！':'继续加油！';document.getElementById('res-correct').textContent=battle.correct+'/'+battle.questions.length;document.getElementById('res-combo').textContent=battle.maxCombo;document.getElementById('res-hp').textContent=battle.hp;document.getElementById('xp-gain').textContent='+'+battle.roundXP+' XP';const lvlMsg=document.getElementById('level-up-msg');if(newLv.lv>oldLv){sfxLevelUp();lvlMsg.innerHTML='<div style="color:var(--gold);font-weight:900;font-size:1.1rem;margin-top:8px">🎉 升级！'+newLv.icon+' '+newLv.title+'</div>';spawnParticles(window.innerWidth/2,window.innerHeight/2,'🎉',15);setTimeout(()=>{document.getElementById('level-title').textContent='晋升 '+newLv.title+'！';document.getElementById('level-desc').textContent='新称号解锁：'+newLv.desc+'\n总分 '+state.xp+' XP';document.getElementById('level-modal').style.display='flex'},400)}else{lvlMsg.innerHTML=''}}
+function closeLevelModal(){document.getElementById('level-modal').style.display='none'}
+function resetGame(){if(confirm('确定要重置所有存档吗？等级、XP、签到记录都将清零。')){state={...DEFAULT_STATE};saveState(state);goHome()}}
+renderHome();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+</script>
+</body>
+</html>
