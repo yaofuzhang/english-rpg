@@ -147,7 +147,7 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 
 <!-- ==================== HOME ==================== -->
 <div id="home-screen" class="screen active">
-  <div class="game-title">⚔️ 英语征途</div><div class="game-subtitle">同等学力申硕 · RPG 训练营 <b style="color:var(--accent);font-size:clamp(.6rem,2vw,.72rem)">v6</b></div>
+  <div class="game-title">⚔️ 英语征途</div><div class="game-subtitle">同等学力申硕 · RPG 训练营 <b style="color:var(--accent);font-size:clamp(.6rem,2vw,.72rem)">v7</b></div>
   <div class="character-card">
     <div class="avatar" id="avatar-icon">📖</div>
     <div class="char-info">
@@ -281,24 +281,27 @@ function speak(text,rate){
   const clean=(typeof text==='string'?text.replace(/<[^>]*>/g,'').replace(/\[.*?\]/g,'').trim():String(text));
   if(!clean||clean.length<1)return;
 
-  // ENGINE 1: Web Speech — try WITHOUT lang first (Chinese phones may not have en-US voice)
+  // ENGINE 1: Web Speech — try multiple strategies
   if('speechSynthesis' in window){
     try{
       speechSynthesis.cancel();
+      const voices=speechSynthesis.getVoices();
+      const enVoice=voices.find(v=>v.lang.startsWith('en'));
+      const zhVoice=voices.find(v=>v.lang.startsWith('zh'));
       const u=new SpeechSynthesisUtterance(clean);
-      // DON'T set lang — let phone use whatever voice it has to pronounce English
-      u.rate=rate||0.85;
-      u.volume=1;
-      // Track if this actually produces audio
+      u.rate=rate||0.85;u.volume=1;
+      // Strategy: use English voice if available, else Chinese voice (can pronounce English)
+      if(enVoice){u.voice=enVoice;u.lang='en-US'}
+      else if(zhVoice){u.voice=zhVoice;u.lang='zh-CN'} // Chinese voice reading English — sounds accented but works
+      // else: no voice set, hope for the best
       let heard=false;
-      u.onstart=()=>{heard=true;ttsStatus='✅ Web Speech 工作中'};
-      u.onerror=(e)=>{ttsStatus='Web Speech 错误:'+e.error;if(!heard)speakAudio(clean)};
-      u.onend=()=>{if(!heard){ttsStatus='Web Speech 无声，切 Audio';speakAudio(clean)}};
+      u.onstart=()=>{heard=true;ttsStatus='✅ 语音播放中 ('+(enVoice?'英文':'中文')+'语音)'};
+      u.onerror=(e)=>{ttsStatus='Web Speech错误:'+e.error;if(!heard)speakAudio(clean)};
+      u.onend=()=>{if(!heard){ttsStatus='无声,切Audio';speakAudio(clean)}};
       speechSynthesis.speak(u);
-      // If no onstart within 500ms, assume it failed silently
       setTimeout(()=>{if(!heard){speechSynthesis.cancel();speakAudio(clean)}},600);
       return;
-    }catch(e){ttsStatus='Web Speech 异常:'+e.message}
+    }catch(e){ttsStatus='Web Speech异常:'+e.message}
   }
 
   // ENGINE 2: Audio element fallback
@@ -306,21 +309,25 @@ function speak(text,rate){
 }
 
 function speakAudio(text){
-  ttsStatus='尝试 Audio 播放...';
-  // Try multiple TTS URLs (some may be blocked in China)
+  ttsStatus='尝试 Audio...';
+  // Baidu TTS — works in China, no API key needed
+  // Also try Microsoft and Google as fallbacks
   const urls=[
-    {url:'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=',name:'Google'},
-    {url:'https://translate.google.cn/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=',name:'Google CN'},
+    {url:'https://fanyi.baidu.com/gettts?lan=en&text=',name:'百度翻译',suffix:'&spd=3&source=web'},
+    {url:'https://translate.google.cn/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=',name:'Google CN',suffix:''},
   ];
   let idx=0;
-  const el=document.createElement('audio');
-  el.volume=1;
 
   function tryNext(){
-    if(idx>=urls.length){ttsStatus='❌ 所有 TTS 源不可用';toast('❌ 语音播放失败。你的网络可能受限。请确保手机媒体音量已打开。',4000);return}
-    el.src=urls[idx].url+encodeURIComponent(text);
-    el.play().then(()=>{ttsStatus='✅ '+urls[idx].name+' TTS 播放中'}).catch(()=>{idx++;tryNext()});
+    if(idx>=urls.length){ttsStatus='❌ 所有源不可用';toast('❌ 播放失败。检查手机媒体音量。',4000);return}
+    const el=new Audio();
+    el.volume=1;
+    el.src=urls[idx].url+encodeURIComponent(text)+(urls[idx].suffix||'');
+    el.oncanplaythrough=()=>{el.play();ttsStatus='✅ '+urls[idx].name}
     el.onerror=()=>{idx++;tryNext()};
+    el.play().then(()=>{ttsStatus='✅ '+urls[idx].name}).catch(()=>{idx++;tryNext()});
+    // Timeout: if no sound after 3s, try next
+    setTimeout(()=>{if(el.paused&&!el.ended){idx++;tryNext()}},3000);
   }
   tryNext();
 }
