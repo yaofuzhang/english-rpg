@@ -112,6 +112,9 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
   <button onclick="resetGame()" class="w" style="background:transparent;color:var(--muted);border:1px solid #2d2d4a;padding:4px 12px;border-radius:6px;font-size:clamp(.55rem,2vw,.65rem);cursor:pointer">🔄 重置</button>
 </div>
 
+<!-- ===== TUTORIAL ===== -->
+<div id="tutorial-screen" class="screen"><div style="text-align:center;width:92vw;max-width:600px"><div style="font-size:clamp(2rem,10vw,4rem);display:block;margin-bottom:10px" id="tut-e"></div><h3 style="font-size:clamp(1rem,4vw,1.3rem);margin-bottom:6px" id="tut-t"></h3><p style="color:var(--muted);font-size:clamp(.8rem,3vw,.95rem);line-height:1.6" id="tut-p"></p></div><div class="btn-row w" style="margin-top:12px"><button class="btn-sm" id="tut-prev" onclick="tutPrev()" style="flex:1">← 上一步</button><button class="btn btn-p" id="tut-next" onclick="tutNext()" style="flex:1">下一步 →</button></div></div>
+
 <!-- ===== LESSON ===== -->
 <div id="lesson-screen" class="screen"><div class="lesson-step w" id="lesson-content"></div><div class="btn-row w" style="margin-top:12px"><button class="btn-sm" id="lsn-prev" onclick="lsnPrev()" style="flex:1">← 上一步</button><button class="btn btn-p" id="lsn-next" onclick="lsnNext()" style="flex:1">下一步 →</button></div></div>
 
@@ -140,6 +143,15 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
   <div class="q-box w"><div class="q-text" id="boss-q"></div></div>
   <div class="fb" id="boss-fb"></div>
   <div class="opts w" id="boss-opts"></div>
+</div>
+
+<!-- ===== WRITE ===== -->
+<div id="write-screen" class="screen" style="align-items:stretch;gap:clamp(6px,1.5vh,10px)">
+  <div style="display:flex;align-items:center;gap:8px" class="w"><button onclick="goHome()" style="background:transparent;color:var(--muted);border:1px solid #2d2d4a;padding:4px 10px;border-radius:6px;font-size:clamp(.65rem,2.2vw,.72rem);cursor:pointer">←</button><span style="color:var(--muted);font-size:clamp(.7rem,2.5vw,.8rem)">✍️ 写作填空</span><span style="margin-left:auto;font-size:clamp(.6rem,2.2vw,.7rem);color:var(--muted)" id="write-counter">1/3</span></div>
+  <div class="card w" style="font-size:clamp(.85rem,3.2vw,1rem);line-height:2" id="write-prompt"></div>
+  <div class="btn-row w"><input type="text" id="write-input" placeholder="输入你填的英文单词..." autocomplete="off" autocapitalize="off" spellcheck="false" style="flex:1;background:var(--card);border:2px solid var(--accent);border-radius:10px;padding:12px;color:var(--text);font-size:clamp(.8rem,3vw,.95rem);outline:none"><button class="btn-sm btn-p" onclick="checkWrite()" style="max-width:60px">提交</button></div>
+  <div style="text-align:center;font-size:clamp(.78rem,2.8vw,.9rem);min-height:22px" id="write-fb"></div>
+  <button class="btn-sm" onclick="speakWrite()" style="background:var(--card);border:1px solid var(--accent);color:var(--accent);margin:0 auto;width:auto">🔊 听模板句</button>
 </div>
 
 <!-- ===== RESULT ===== -->
@@ -338,7 +350,7 @@ function rH(){
 // ==================== TUTORIAL ====================
 const TUT=[{e:'👋',t:'欢迎勇士！',p:'你的起点：<b>零基础</b>。目标：<b>60分及格</b>。<br>学考试考的，不学不考的。',b:'开始 →'},{e:'📐',t:'5种句型就够了',p:'<div class="sentence"><span class="s">Birds</span> <span class="v">fly</span>.</div><div class="sentence"><span class="s">She</span> <span class="v">eats</span> <span class="o">rice</span>.</div><div class="sentence"><span class="s">She</span> <span class="v">is</span> <span class="c">tall</span>.</div><br><button onclick="speak(\'Birds fly. She eats rice. She is tall.\')" class="speak-btn">🔊 听发音</button>',b:'这么简单 →'},{e:'⚔️',t:'快速战斗',p:'每局 <b>5题·2分钟</b>。等电梯来一局。<br>❤️3条命 · 🔥连击翻倍 · ⚡暴击惊喜',b:'开始修炼！→'}];
 let ti=0;
-function showTut(){const s=TUT[ti];document.getElementById('tut-content')?document.getElementById('tut-content').innerHTML:`<div class="big-emoji">${s.e}</div><h3>${s.t}</h3><p>${s.p}</p>`:0}
+function showTut(){const s=TUT[ti];document.getElementById('tut-e').textContent=s.e;document.getElementById('tut-t').textContent=s.t;document.getElementById('tut-p').innerHTML=s.p;document.getElementById('tut-prev').style.display=ti===0?'none':'inline-flex';document.getElementById('tut-next').textContent=s.b;ssr('tutorial-screen')}
 function tutNext(){ti++;if(ti>=TUT.length){S.td=true;ss(S);goHome()}else showTut()}
 // Init tutorial if needed — handled in rH()
 
