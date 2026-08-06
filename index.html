@@ -93,7 +93,7 @@ body{font-family:-apple-system,'Segoe UI',system-ui,sans-serif;background:var(--
 
 <!-- ===== HOME ===== -->
 <div id="home-screen" class="screen active">
-  <div class="game-title">⚔️ 英语征途</div><div class="subtitle">同等学力申硕 · RPG 训练营 <b style="color:var(--accent)">v8</b></div>
+  <div class="game-title">⚔️ 英语征途</div><div class="subtitle">同等学力申硕 · RPG 训练营 <b style="color:var(--accent)">v8.1</b></div>
   <div class="card char-card w"><div class="avatar" id="home-av">📖</div><div class="char-info"><div class="char-name" id="home-name">英语难民</div><div class="char-lvl" id="home-lvl">Lv.1 · 从零开始</div><div class="xp-bar"><div class="xp-fill" id="home-xp" style="width:0%"></div></div><div style="font-size:clamp(.58rem,2vw,.68rem);color:var(--muted)" id="home-xpt">0/100 XP</div></div></div>
 
   <div class="stats w"><div class="stat card"><div class="v" style="color:var(--combo)" id="s-streak">0</div><div class="l">🔥签到</div></div><div class="stat card"><div class="v" style="color:var(--gold)" id="s-coins">0</div><div class="l">🪙金币</div></div><div class="stat card"><div class="v" style="color:#22d3ee" id="s-best">0</div><div class="l">💎连击</div></div><div class="stat card"><div class="v" style="color:#a855f7" id="s-review">0</div><div class="l">🧠复习</div></div></div>
@@ -350,7 +350,7 @@ function rH(){
 // ==================== TUTORIAL ====================
 const TUT=[{e:'👋',t:'欢迎勇士！',p:'你的起点：<b>零基础</b>。目标：<b>60分及格</b>。<br>学考试考的，不学不考的。',b:'开始 →'},{e:'📐',t:'5种句型就够了',p:'<div class="sentence"><span class="s">Birds</span> <span class="v">fly</span>.</div><div class="sentence"><span class="s">She</span> <span class="v">eats</span> <span class="o">rice</span>.</div><div class="sentence"><span class="s">She</span> <span class="v">is</span> <span class="c">tall</span>.</div><br><button onclick="speak(\'Birds fly. She eats rice. She is tall.\')" class="speak-btn">🔊 听发音</button>',b:'这么简单 →'},{e:'⚔️',t:'快速战斗',p:'每局 <b>5题·2分钟</b>。等电梯来一局。<br>❤️3条命 · 🔥连击翻倍 · ⚡暴击惊喜',b:'开始修炼！→'}];
 let ti=0;
-function showTut(){const s=TUT[ti];document.getElementById('tut-e').textContent=s.e;document.getElementById('tut-t').textContent=s.t;document.getElementById('tut-p').innerHTML=s.p;document.getElementById('tut-prev').style.display=ti===0?'none':'inline-flex';document.getElementById('tut-next').textContent=s.b;ssr('tutorial-screen')}
+function showTut(){try{const s=TUT[ti];const te=document.getElementById('tut-e');if(!te){S.td=true;ss(S);goHome();return}te.textContent=s.e;document.getElementById('tut-t').textContent=s.t;document.getElementById('tut-p').innerHTML=s.p;document.getElementById('tut-prev').style.display=ti===0?'none':'inline-flex';document.getElementById('tut-next').textContent=s.b;ssr('tutorial-screen')}catch(e){S.td=true;ss(S);goHome()}}
 function tutNext(){ti++;if(ti>=TUT.length){S.td=true;ss(S);goHome()}else showTut()}
 // Init tutorial if needed — handled in rH()
 
@@ -406,7 +406,7 @@ function checkA(){ACH.forEach(a=>{if(!S.ua.includes(a.id)&&a.c(S)){S.ua.push(a.i
 function openAchievements(){document.getElementById('ach-grid').innerHTML=ACH.map(a=>{const u=S.ua.includes(a.id);return'<div class="card" style="text-align:center;opacity:'+(u?'1':'.4')+';border-color:'+(u?'var(--gold)':'')+'"><span style="font-size:1.4rem;display:block">'+(u?a.e:'🔒')+'</span><b style="font-size:.75rem">'+a.n+'</b><br><small style="color:var(--muted)">'+a.d+'</small></div>'}).join('');document.getElementById('ach-modal').style.display='flex'}
 function resetGame(){if(confirm('重置所有存档？')){S=JSON.parse(JSON.stringify(D));ss(S);goHome()}}
 
-rH();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+try{rH()}catch(e){S.td=true;ss(S);try{rH()}catch(e2){document.getElementById('home-screen').innerHTML='<div style="text-align:center;padding:40px"><h2>⚠️ 加载异常</h2><p style="color:var(--muted)">请清除浏览器缓存后重试</p><button class="btn btn-p" onclick="localStorage.clear();location.reload()">清除缓存并刷新</button></div>';document.getElementById('home-screen').classList.add('active')}}if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>
