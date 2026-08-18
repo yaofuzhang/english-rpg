@@ -176,9 +176,7 @@ function vQ(w){const c=w[1];const ds=VOCAB.filter(x=>x[1]!==c&&x[1].length<8).so
 (function(){
 if(typeof window.EXTRA_VOCAB!=='undefined'&&Array.isArray(window.EXTRA_VOCAB)){
   const seen=new Set(VOCAB.map(w=>w[0]));
-  let added=0;
-  window.EXTRA_VOCAB.forEach(w=>{if(w&&w[0]&&!seen.has(w[0])){seen.add(w[0]);VOCAB.push(w);added++}});
-  console.log('[vocab] merged '+added+' new words, total='+VOCAB.length);
+  window.EXTRA_VOCAB.forEach(w=>{if(w&&w[0]&&!seen.has(w[0])){seen.add(w[0]);VOCAB.push(w)}});
 }
 })();
 
@@ -269,7 +267,8 @@ function startBattle(to){
 function rBH(){let h='';for(let i=0;i<3;i++)h+='<span class="heart'+(i>=bt.hp?' lost':'')+'">'+(i>=bt.hp?'🖤':'❤️')+'</span>';if(bs.sh>0)h+=' 🛡️';document.getElementById('hearts').innerHTML=h}
 function rBCB(){const b=document.getElementById('cb');if(bt.combo>=2){b.textContent='🔥 x'+bt.combo;b.classList.add('on')}else b.classList.remove('on')}
 function rBQC(){const q=bt.questions[bt.idx];const tag=q?._r?' <span style="color:var(--accent);font-size:.6rem">🧠</span>':'';document.getElementById('qc').innerHTML=(bt.idx+1)+'/5'+tag;document.getElementById('rh').textContent=''}
-function sBQ(){if(bt.idx>=bt.questions.length||bt.hp<=0){eB();return}const q=bt.questions[bt.idx];document.getElementById('qt').innerHTML=q.q;document.getElementById('fb').textContent='';document.getElementById('fb').className='fb';const o=document.getElementById('op');o.innerHTML='';q.o.forEach((t,i)=>{const b=document.createElement('button');b.className='opt';b.textContent=t;b.onclick=()=>aBQ(i);o.appendChild(b)});rBQC();if(!q._r&&Math.random()>0.85)document.getElementById('rh').textContent='🍀 可能暴击！'}
+function shOpt(q){if(!q||!Array.isArray(q.o)||q._s)return q;const m=q.o.map((_,i)=>i);m.sort(()=>Math.random()-.5);return{...q,o:m.map(i=>q.o[i]),a:m.indexOf(q.a),_s:1}}
+function sBQ(){if(bt.idx>=bt.questions.length||bt.hp<=0){eB();return}const q=shOpt(bt.questions[bt.idx]);bt.questions[bt.idx]=q;document.getElementById('qt').innerHTML=q.q;document.getElementById('fb').textContent='';document.getElementById('fb').className='fb';const o=document.getElementById('op');o.innerHTML='';q.o.forEach((t,i)=>{const b=document.createElement('button');b.className='opt';b.textContent=t;b.onclick=()=>aBQ(i);o.appendChild(b)});rBQC();if(!q._r&&Math.random()>0.85)document.getElementById('rh').textContent='🍀 可能暴击！'}
 function aBQ(idx){
   const q=bt.questions[bt.idx];const ok=idx===q.a;document.querySelectorAll('#op .opt').forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add('ok')});if(!ok)document.querySelectorAll('#op .opt')[idx].classList.add('no');
   if(!ft){const bk=Object.keys(B).find(k=>B[k]&&B[k].some&&B[k].some(x=>x.q===q.q))||'v';const bi=(B[bk]||[]).findIndex?.(x=>x.q===q.q)??-1;if(bi>=0)uR(bk,bi,ok);if(ok&&q._r)S.rdn=(S.rdn||0)+1}
